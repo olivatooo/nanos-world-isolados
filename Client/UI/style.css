@@ -1,0 +1,233 @@
+body {
+  height: 100%;
+}
+
+html {
+  height: 100%;
+}
+
+.poison {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("poison.png");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.shield {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("shield.png");
+  display: inherit;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.blood {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("blood.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.speed {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("speed.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.freeze {
+  position: fixed; /* Sit on top of the page content */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("freeze.png");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.negative-bar {
+  height: 8px;
+}
+
+.status-bars {
+  position: absolute;
+  bottom: 10%;
+  width: 25%;
+  margin: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.spacing {
+  margin: 4px;
+}
+
+.center {
+  margin: auto;
+  padding: 10px;
+}
+
+.half {
+  width: 50%;
+}
+
+.quarter {
+  width: 25%;
+}
+
+.pint {
+  width: 10%;
+}
+
+.statuses {
+  height: 100%;
+}
+
+.shadow {
+  text-shadow: 1px 1px 2px black;
+}
+
+.text_enemy_bar {
+  font-size: 12px;
+}
+
+@keyframes explosion {
+  to {
+    transform: scale(2) rotate(3deg);
+    -moz-transform: scale(2) rotate(3deg);
+    -webkit-transform: scale(2) rotate(3deg);
+    -o-transform: scale(2) rotate(3deg);
+    opacity: 0;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+@keyframes big-explosion {
+  to {
+    transform: scale(3) rotate(180deg);
+    -moz-transform: scale(3) rotate(180deg);
+    -webkit-transform: scale(3) rotate(180deg);
+    -o-transform: scale(3) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.big-explode {
+  animation-name: big-explosion;
+  animation-duration: 1s;
+}
+
+.explode {
+  animation-name: explosion;
+  animation-duration: 1s;
+}
+
+.height-10 {
+  height: 10px;
+}
+
+.health-container {
+  position: fixed;
+  bottom: 0px;
+  display: block;
+  float: left;
+  width: 10%;
+  margin-bottom: 1%;
+}
+
+.margin-8 {
+  margin: 8px;
+}
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.exp-container {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  position: absolute;
+  bottom: 1%;
+  margin-bottom: 8px;
+  left: 50%;
+  width: 40%;
+  transform: translate(-50%, -50%);
+  height: 4px;
+}
+
+#player-exp-bar {
+  height: 3px;
+}
+
+#player-exp-number {
+  margin-top: 1px;
+  font-size: 10px;
+}
+
+.bullet-container {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  display: block;
+  float: right;
+  width: 10%;
+  margin-bottom: 1%;
+}
+
+.grenade-container {
+  height: 8px;
+  font-size: 11px;
+  width: 50%;
+}
+
+#total-bullets {
+  font-size: 11px;
+}
