@@ -1,13 +1,14 @@
-Package.Require("iCharacter/iCharacter.lua")
+Package.Require("Isolado.lua")
 
 Player.Subscribe("Spawn", function(new_player)
-	iCharacter(Vector(0, 0, 0), Rotator(), "nanos-world::SK_Mannequin", 100, 100, new_player)
+	Isolado(Vector(0, 0, 0), Rotator(), "nanos-world::SK_Mannequin", new_player, 100, 100, 1, 1, 1, 2, 100, 100)
 end)
-
 
 Package.Subscribe("Load", function()
 	for _,player in pairs(Player.GetAll()) do
-		iCharacter(Vector(0, 0, 0), Rotator(), "nanos-world::SK_Mannequin", 100, 100, player)
+		Prop(Vector(0,0,500), Rotator(), "nanos-world::SM_Cube")
+		-- TODO: Save player state to load this data on join server
+		Isolado(Vector(0, 0, 0), Rotator(), "nanos-world::SK_Mannequin", player, 100, 200, 1, 1, 1, 2, 30, 200)
 	end
 end)
 

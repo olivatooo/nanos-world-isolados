@@ -25,3 +25,4 @@ function EnemyHP(actual, total) {
     enemy_hp_bar.setAttribute("style", "width:" + progress + "%;");
   }
 }
+Events.Subscribe("EnemyHP", EnemyHP);

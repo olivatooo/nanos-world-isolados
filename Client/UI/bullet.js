@@ -5,9 +5,11 @@ function SetBullet(actual, max_clip, total) {
   bar.setAttribute("style", "width:" + progress + "%;");
   bullets.innerHTML = actual + "/" + total;
 }
+Events.Subscribe("SetBullet", SetBullet);
 
 function SetGrenade(actual, max) {
   let bar = document.getElementById("grenade-bar");
   let progress = (100 * actual) / max;
   bar.setAttribute("style", "width:" + progress + "%;");
 }
+Events.Subscribe("SetGrenade", SetGrenade);

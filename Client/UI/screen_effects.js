@@ -12,6 +12,7 @@ function ApplyPoison(value) {
   screen.setAttribute("style", "display:block;");
   screen.setAttribute("style", "opacity:" + value / 100);
 }
+Events.Subscribe("ApplyPoison", ApplyPoison);
 
 function ApplyFreezing(value) {
   let bar_visibility = document.getElementById("freezing-visibility");
@@ -27,6 +28,7 @@ function ApplyFreezing(value) {
   screen.setAttribute("style", "display:block;");
   screen.setAttribute("style", "opacity:" + value / 100);
 }
+Events.Subscribe("ApplyFreezing", ApplyFreezing);
 
 function ApplyBleeding(value) {
   let bar_visibility = document.getElementById("bleeding-visibility");
@@ -42,6 +44,37 @@ function ApplyBleeding(value) {
   screen.setAttribute("style", "display:block;");
   screen.setAttribute("style", "opacity:" + value / 100);
 }
+Events.Subscribe("ApplyBleeding", ApplyBleeding);
+
+function ApplyShock(value) {
+  let bar_visibility = document.getElementById("shock-visibility");
+  let bar = document.getElementById("shock-bar");
+  if (value == 0) {
+    bar_visibility.setAttribute("style", "display:none;");
+  } else {
+    bar_visibility.setAttribute("style", "display:block;");
+  }
+  bar.setAttribute("style", "width:" + value + "%;");
+
+  let screen = document.getElementById("shock-screen");
+  screen.setAttribute("style", "display:block;");
+  screen.setAttribute("style", "opacity:" + value / 100);
+}
+
+function ApplyFire(value) {
+  let bar_visibility = document.getElementById("fire-visibility");
+  let bar = document.getElementById("fire-bar");
+  if (value == 0) {
+    bar_visibility.setAttribute("style", "display:none;");
+  } else {
+    bar_visibility.setAttribute("style", "display:block;");
+  }
+  bar.setAttribute("style", "width:" + value + "%;");
+
+  let screen = document.getElementById("fire-screen");
+  screen.setAttribute("style", "display:block;");
+  screen.setAttribute("style", "opacity:" + value / 100);
+}
 
 function ApplySpeed(value) {
   let screen = document.getElementById("speed-screen");
@@ -52,6 +85,7 @@ function ApplySpeed(value) {
     screen.setAttribute("style", "opacity:" + value / 100);
   }
 }
+Events.Subscribe("ApplySpeed", ApplySpeed);
 
 function ApplyShield(value) {
   let screen = document.getElementById("shield-screen");
@@ -62,3 +96,4 @@ function ApplyShield(value) {
     screen.setAttribute("style", "opacity:" + value / 100);
   }
 }
+Events.Subscribe("ApplyShield", ApplySpeed);

@@ -23,6 +23,7 @@ function PlayerHP(actual, total) {
     enemy_hp_bar.setAttribute("style", "width:" + progress + "%;");
   }
 }
+Events.Subscribe("PlayerHP", PlayerHP);
 
 function PlayerShield(actual, total) {
   let field = document.getElementById("player-shield");
@@ -49,6 +50,7 @@ function PlayerShield(actual, total) {
     enemy_hp_bar.setAttribute("style", "width:" + progress + "%;");
   }
 }
+Events.Subscribe("PlayerShield", PlayerShield);
 
 function PlayerExperience(actual, total, lvl) {
   let field = document.getElementById("player-exp");
@@ -65,3 +67,4 @@ function PlayerExperience(actual, total, lvl) {
 
   enemy_hp_number.innerHTML = "LVL " + lvl;
 }
+Events.Subscribe("PlayerExperience", PlayerExperience);
