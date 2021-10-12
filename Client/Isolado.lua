@@ -10,12 +10,12 @@ Isolado = {
 }
 
 function PlayerHP(actual_hp, max_hp)
-	Package.Log("Player HP Setted")
 	UI:CallEvent("PlayerHP", actual_hp, max_hp)
 end
+Events.Subscribe("Health.Update", PlayerHP)
 
 function DamageHandler(actual_hp, max_hp, actual_sp, max_sp)
-	Package.Log(actual_hp, max_hp, actual_sp, max_sp)
+	-- Package.Log(actual_hp, max_hp, actual_sp, max_sp)
 	max_hp = max_hp or Isolado.MaxHP
 	PlayerHP(actual_hp, max_hp)
 	max_sp = max_sp or Isolado.MaxSP
@@ -26,7 +26,7 @@ Events.Subscribe("Isolado.DamageHandler", DamageHandler)
 function UpdateShield(actual_shield, max_shield)
 	UI:CallEvent("PlayerShield", actual_shield, max_shield);
 end
-Events.Subscribe("Isolado.UpdateShield", PlayerShield)
+Events.Subscribe("Shield.Update", UpdateShield)
 
 function PlayerExperience(actual_exp, max_exp, lvl)
 	UI:CallEvent("PlayerExperience", actual_exp, max_exp, lvl);

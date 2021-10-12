@@ -1,4 +1,5 @@
 Package.Require("Shield.lua")
+Package.Require("Health.lua")
 
 Isolado = {}
 Isolado.__index = Isolado
@@ -11,20 +12,16 @@ setmetatable(Isolado, {
 
 function Isolado:DamageHandler()
 	Character.Subscribe("TakeDamage", function(character, damage, bone, damage_type, from_direction, instigator, causer)
-		if self.Shield.SP > 0 then
-			self.Shield.SP  = self.Shield.SP - damage
+		-- Move some things to shield
+		if self.Shield:TakeDamage(damage) then
+			return false
 		else
-			self.HP = character:GetHealth() - damage
+			self.HP:TakeDamage(damage)
 		end
 
-		if self.HP < 0 then self.HP = 0 end
-		if self.Shield.SP < 0 then self.Shield.SP = 0 end
 
 		-- If Isolado is controlled by a player send {HP, SP} data to Client
-		if self.Player then Events.CallRemote("Isolado.DamageHandler", self.Player, self.HP, self.MaxHP, self.Shield.SP, self.Shield.MaxSP) end
-		if self.Shield.SP > 0 then
-			return false
-		end
+		-- if self.Player then Events.CallRemote("Isolado.DamageHandler", self.Player, self.HP, self.MaxHP, self.Shield.SP, self.Shield.MaxSP) end
 	end)
 end
 
@@ -33,14 +30,18 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 	local self = setmetatable({}, Isolado)
 	-- TODO: Change mesh to an wardrobe system
 	self.Character = Character(location, rotation, mesh)
-	self.HP = hp or 100
-	self.Character:SetHealth(self.HP)
-	self.MaxHP = max_hp or 100
+
 	self.Speed = speed or 1
 	self.Level = level or 1
+
 	self.Exp = exp or 1
 	self.MaxExp = max_exp or 2
-	self.Shield = Shield(sp, max_sp)
+
+	self.Shield = Shield(player, sp, max_sp)
+	self.HP = Health(player, hp, max_hp)
+
+	self.Character:SetHealth(self.HP.HP)
+
 	self.Player = player or nil
 
 	if self.Player then
