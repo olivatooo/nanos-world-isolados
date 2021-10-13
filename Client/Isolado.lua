@@ -9,10 +9,73 @@ Isolado = {
 	Speed = 1,
 }
 
+
+Client.Subscribe("SpawnLocalPlayer", function(local_player)
+	local_player:Subscribe("Possess", function(player, character)
+		UpdateLocalCharacter(character)
+	end)
+end)
+
+
+Package.Subscribe("Load", function()
+	Client.SetMouseEnabled(false)
+	Client.SetInputEnabled(true)
+	local local_player = Client.GetLocalPlayer()
+	if (local_player ~= nil) then
+		UpdateLocalCharacter(local_player:GetControlledCharacter())
+		local_player:Subscribe("Possess", function(player, character)
+			UpdateLocalCharacter(character)
+		end)
+	end
+
+
+end)
+
+
 function PlayerHP(actual_hp, max_hp)
 	UI:CallEvent("PlayerHP", actual_hp, max_hp)
 end
 Events.Subscribe("Health.Update", PlayerHP)
+
+
+-- Function to set all needed events on local character (to update the UI when it takes damage or dies)
+function UpdateLocalCharacter(character)
+	if (character == nil) then return end
+
+	PlayerHP(character:GetHealth(), character:GetMaxHealth())
+
+	character:Subscribe("TakeDamage", function(charac, damage, damage_type, bone, from_direction, instigator, causer)
+		Sound(Vector(), "nanos-world::A_HitTaken_Feedback", true)
+	end)
+
+	local current_picked_item = character:GetPicked()
+
+	if (current_picked_item and current_picked_item:GetType() == "Weapon") then
+		SetBullet(current_picked_item:GetAmmoClip(), current_picked_item:GetAmmoToReload(), current_picked_item:GetAmmoBag())
+	end
+
+	character:Subscribe("PickUp", function(charac, object)
+		if (object:GetType() == "Weapon") then
+			SetBullet(object:GetAmmoClip(), object:GetAmmoToReload(), object:GetAmmoBag())
+			character:Subscribe("Fire", function(charac, weapon)
+				SetBullet(weapon:GetAmmoClip(), weapon:GetAmmoToReload(), weapon:GetAmmoBag())
+			end)
+
+			-- Sets on character an event to update the UI when he reloads the weapon
+			character:Subscribe("Reload", function(charac, weapon, ammo_to_reload)
+				SetBullet(weapon:GetAmmoClip(), weapon:GetAmmoToReload(), weapon:GetAmmoBag())
+			end)
+		end
+	end)
+
+	-- Sets on character an event to remove the ammo ui when he drops it's weapon
+	character:Subscribe("Drop", function(charac, object)
+		character:Unsubscribe("Fire")
+		character:Unsubscribe("Reload")
+	end)
+
+end
+
 
 function DamageHandler(actual_hp, max_hp, actual_sp, max_sp)
 	-- Package.Log(actual_hp, max_hp, actual_sp, max_sp)
@@ -31,7 +94,7 @@ Events.Subscribe("Shield.Update", UpdateShield)
 function PlayerExperience(actual_exp, max_exp, lvl)
 	UI:CallEvent("PlayerExperience", actual_exp, max_exp, lvl);
 end
-Events.Subscribe("iCharacter.PlayerExperience", PlayerExperience)
+Events.Subscribe("Experience.SetExperience", PlayerExperience)
 
 function EnemyHP(actual_enemy_hp, max_enemy_hp)
 	UI:CallEvent("EnemyHP", actual_enemy_hp, max_enemy_hp);

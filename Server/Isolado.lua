@@ -1,4 +1,5 @@
 Package.Require("Shield.lua")
+Package.Require("Experience.lua")
 Package.Require("Health.lua")
 
 Isolado = {}
@@ -11,17 +12,14 @@ setmetatable(Isolado, {
 
 
 function Isolado:DamageHandler()
-	Character.Subscribe("TakeDamage", function(character, damage, bone, damage_type, from_direction, instigator, causer)
-		-- Move some things to shield
-		if self.Shield:TakeDamage(damage) then
-			return false
-		else
-			self.HP:TakeDamage(damage)
+	self.Character:Subscribe("TakeDamage", function(character, damage, bone, damage_type, from_direction, instigator, causer)
+		if self.Player then
+			if self.Shield:TakeDamage(damage) then
+				return false
+			else
+				self.HP:TakeDamage(damage)
+			end
 		end
-
-
-		-- If Isolado is controlled by a player send {HP, SP} data to Client
-		-- if self.Player then Events.CallRemote("Isolado.DamageHandler", self.Player, self.HP, self.MaxHP, self.Shield.SP, self.Shield.MaxSP) end
 	end)
 end
 
@@ -37,18 +35,17 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 	self.Exp = exp or 1
 	self.MaxExp = max_exp or 2
 
-	self.Shield = Shield(player, sp, max_sp)
+	self.Player = player or nil
+
+	self.Shield = Shield(self.Player, sp, max_sp)
 	self.HP = Health(player, hp, max_hp)
 
 	self.Character:SetHealth(self.HP.HP)
 
-	self.Player = player or nil
 
 	if self.Player then
+		self.Exp = Experience(self.Player, 0, 1)
 		self.Player:Possess(self.Character)
-		Timer.SetTimeout(function()
-			Events.CallRemote("Isolado.DamageHandler", self.Player, self.HP, self.MaxHP, self.SP, self.MaxSP)
-		end, 1000)
 	end
 
 	self:DamageHandler()
