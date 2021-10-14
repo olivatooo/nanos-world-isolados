@@ -13,7 +13,6 @@ end
 
 
 function Experience:Add(amount)
-	Package.Log("Added: " .. tostring(amount) .. " experience")
 	self.Exp = self.Exp + amount
 	if self.Exp >= self.MaxExp then
 		self.Level = self.Level + 1
@@ -25,7 +24,6 @@ end
 
 function Experience:KillExperience()
 	Character.Subscribe("Death", function(_, _, _, _, _, instigator)
-		Package.Log("Someone died... killed by : " .. tostring(instigator))
 		if instigator == self.Player then
 			self:Add(1)
 		end
@@ -34,7 +32,6 @@ end
 
 
 function Experience.new(player, current_exp, level)
-	Package.Log("Initialized experience bar with player: " .. tostring(player))
 	local self = setmetatable({}, Experience)
 	self.Player = player
 	self.Level = level

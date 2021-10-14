@@ -7,6 +7,12 @@ setmetatable(Health, {
 })
 
 
+function Health:Destroy()
+	Timer.ClearTimeout(self.RechargeTimer)
+	Timer.ClearInterval(self.RechargeInterval)
+end
+
+
 function Health:RechargeTimeout()
 	-- Cancel any timers if active
 	if self.RechargeTimer and Timer.IsValid(self.RechargeTimer) then

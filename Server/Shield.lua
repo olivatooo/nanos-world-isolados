@@ -7,6 +7,12 @@ setmetatable(Shield, {
 })
 
 
+function Shield:Destroy()
+	Timer.ClearTimeout(self.RechargeTimer)
+	Timer.ClearInterval(self.RechargeInterval)
+end
+
+
 function Shield:RechargeTimeout()
 	-- Cancel any timers if active
 	if self.RechargeTimer and Timer.IsValid(self.RechargeTimer) then
@@ -32,6 +38,7 @@ function Shield:Recharge()
 			return false
 		end
 		if self.Player then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
+		return false
 	end, self.RechargeSpeed)
 end
 

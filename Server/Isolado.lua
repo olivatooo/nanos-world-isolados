@@ -1,6 +1,7 @@
 Package.Require("Shield.lua")
 Package.Require("Experience.lua")
 Package.Require("Health.lua")
+Package.Require("PowerUp.lua")
 
 Isolado = {}
 Isolado.__index = Isolado
@@ -20,6 +21,16 @@ function Isolado:DamageHandler()
 				self.HP:TakeDamage(damage)
 			end
 		end
+	end)
+end
+
+
+function Isolado:Disconnect()
+	-- When player disconnects we need to trigger some things...
+	-- First, stop all ticking (HP, Shield, Poison, ETC)
+	self.Player:Subscribe("Destroy", function(_)
+		self.HP:Destroy()
+		self.Shield:Destroy()
 	end)
 end
 
@@ -46,6 +57,7 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 	if self.Player then
 		self.Exp = Experience(self.Player, 0, 1)
 		self.Player:Possess(self.Character)
+		self:Disconnect()
 	end
 
 	self:DamageHandler()
