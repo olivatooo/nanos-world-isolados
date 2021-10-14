@@ -27,8 +27,6 @@ Package.Subscribe("Load", function()
 			UpdateLocalCharacter(character)
 		end)
 	end
-
-
 end)
 
 
@@ -38,7 +36,6 @@ end
 Events.Subscribe("Health.Update", PlayerHP)
 
 
--- Function to set all needed events on local character (to update the UI when it takes damage or dies)
 function UpdateLocalCharacter(character)
 	if (character == nil) then return end
 
@@ -76,6 +73,17 @@ function UpdateLocalCharacter(character)
 
 end
 
+Grenades = 3
+-- TODO: Create a power up module that can be used by pressing F
+Client.Subscribe("KeyPress", function(key_name)
+	if key_name == "F" then
+		if Grenades > 0 then
+			Grenades = Grenades - 1
+			SetGrenade(Grenades, 3)
+			Events.CallRemote("PowerUp")
+		end
+	end
+end)
 
 function DamageHandler(actual_hp, max_hp, actual_sp, max_sp)
 	-- Package.Log(actual_hp, max_hp, actual_sp, max_sp)
@@ -105,6 +113,7 @@ function SetGrenade(actual_number_of_grenades, max_number_of_grenades)
 	UI:CallEvent("SetGrenade", actual_number_of_grenades, max_number_of_grenades);
 end
 Events.Subscribe("iCharacter.SetGrenade", SetGrenade)
+SetGrenade(3, 3)
 
 function SetBullet(actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag)
 	UI:CallEvent("SetBullet", actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag);
