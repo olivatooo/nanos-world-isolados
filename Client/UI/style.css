@@ -1,5 +1,6 @@
 body {
   height: 100%;
+  background-image: url("in-game-test.png");
 }
 
 html {
@@ -125,6 +126,10 @@ html {
   text-shadow: 1px 1px 2px black;
 }
 
+.shadow-white {
+  text-shadow: 1px 1px 1px white;
+}
+
 .text_enemy_bar {
   font-size: 12px;
 }
@@ -233,4 +238,55 @@ html {
 
 #enemy-shield {
   height: 8px;
+}
+
+.top-left {
+  position: fixed;
+  left: 8px;
+  top: 8px;
+}
+
+.weapon-container-comparisson {
+  padding: 8px;
+  color: white;
+  font-weight: 900;
+}
+
+.rarity-common {
+  background-color: rgba(111, 111, 111, 0.5);
+}
+
+.rarity-rare {
+  background-color: rgba(111, 111, 255, 0.5);
+}
+
+.rarity-uncommon {
+  background-color: rgba(111, 255, 111, 0.5);
+}
+
+.rarity-epic {
+  background-color: rgba(255, 111, 255, 0.5);
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #ff3, 0 0 20px #ff3, 0 0 30px #e60073,
+      0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px #ff3, 0 0 30px #ff3, 0 0 40px #ff4da6,
+      0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+
+.rarity-legendary {
+  background-color: rgba(255, 255, 111, 0.5);
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+.rarity-illegal {
+  background-color: rgba(255, 0, 0, 0.5);
+  background-image: url("https://cdn.iconscout.com/icon/free/png-256/prohibited-entry-forbidden-no-not-37995.png");
 }
