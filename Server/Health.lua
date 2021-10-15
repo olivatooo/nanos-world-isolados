@@ -31,13 +31,19 @@ end
 
 function Health:Recharge()
 	self.RechargeInterval = Timer.SetInterval(function()
-		self.HP = self.HP + self.RechargeAmount
-		if self.HP >= self.MaxHP then
-			self.HP = self.MaxHP
+		if self.Character and self.Character:IsValid() and self.Character:GetHealth() > 0 then
+			self.HP = self.HP + self.RechargeAmount
+			if self.HP >= self.MaxHP then
+				self.HP = self.MaxHP
+				self.Character:SetHealth(self.HP)
+				if self.Player then Events.CallRemote("Health.Update", self.Player, self.HP, self.MaxHP) end
+				return false
+			end
+			self.Character:SetHealth(self.HP)
 			if self.Player then Events.CallRemote("Health.Update", self.Player, self.HP, self.MaxHP) end
+		else
 			return false
 		end
-		if self.Player then Events.CallRemote("Health.Update", self.Player, self.HP, self.MaxHP) end
 	end, self.RechargeSpeed)
 end
 
@@ -53,9 +59,10 @@ function Health:TakeDamage(damage)
 end
 
 
-function Health.new(player, hp, max_hp, recharge_amount, recharge_delay, recharge_speed)
+function Health.new(character, player, hp, max_hp, recharge_amount, recharge_delay, recharge_speed)
 	local self = setmetatable({}, Health)
 	self.Player = player
+	self.Character = character
 	self.HP = hp or 1
 	self.MaxHP = max_hp or 1
 	self.RechargeAmount = 1
