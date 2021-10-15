@@ -12,15 +12,38 @@ setmetatable(Isolado, {
 })
 
 
+function SendIsoladoStatusToPlayer(player, isolado)
+	local i =  {}
+	i["level"] = isolado.Level
+	i["hp"] = isolado.HP.HP
+	i["max_hp"] = isolado.HP.MaxHP
+	i["sp"] = isolado.Shield.SP
+	i["max_sp"] = isolado.Shield.MaxSP
+	Events.CallRemote("Isolado.SetEnemyStatusBar", player, i)
+end
+
+
 function Isolado:DamageHandler()
 	self.Character:Subscribe("TakeDamage", function(character, damage, bone, damage_type, from_direction, instigator, causer)
-		if self.Player then
-			if self.Shield:TakeDamage(damage) then
-				return false
-			else
-				self.HP:TakeDamage(damage)
+		if self.Shield:TakeDamage(damage) then
+			if instigator then
+				SendIsoladoStatusToPlayer(instigator, self)
 			end
+			return false
+		else
+			self.HP:TakeDamage(damage)
 		end
+		if instigator then
+			SendIsoladoStatusToPlayer(instigator, self)
+		end
+	end)
+end
+
+
+function Isolado:Death()
+	self.Character:Subscribe("Death", function(_)
+		self.HP:Destroy()
+		self.Shield:Destroy()
 	end)
 end
 
@@ -49,7 +72,7 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 	self.Player = player or nil
 
 	self.Shield = Shield(self.Player, sp, max_sp)
-	self.HP = Health(player, hp, max_hp)
+	self.HP = Health(self.Character, player, hp, max_hp)
 
 	self.Character:SetHealth(self.HP.HP)
 

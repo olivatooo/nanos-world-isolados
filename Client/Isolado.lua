@@ -86,7 +86,6 @@ Client.Subscribe("KeyPress", function(key_name)
 end)
 
 function DamageHandler(actual_hp, max_hp, actual_sp, max_sp)
-	-- Package.Log(actual_hp, max_hp, actual_sp, max_sp)
 	max_hp = max_hp or Isolado.MaxHP
 	PlayerHP(actual_hp, max_hp)
 	max_sp = max_sp or Isolado.MaxSP
@@ -95,12 +94,12 @@ end
 Events.Subscribe("Isolado.DamageHandler", DamageHandler)
 
 function UpdateShield(actual_shield, max_shield)
-	UI:CallEvent("PlayerShield", actual_shield, max_shield);
+	UI:CallEvent("PlayerShield", actual_shield, max_shield)
 end
 Events.Subscribe("Shield.Update", UpdateShield)
 
 function PlayerExperience(actual_exp, max_exp, lvl)
-	UI:CallEvent("PlayerExperience", actual_exp, max_exp, lvl);
+	UI:CallEvent("PlayerExperience", actual_exp, max_exp, lvl)
 end
 Events.Subscribe("Experience.SetExperience", PlayerExperience)
 
@@ -109,6 +108,19 @@ function EnemyHP(actual_enemy_hp, max_enemy_hp)
 end
 Events.Subscribe("iCharacter.EnemyHP", EnemyHP)
 
+function EnemyShield(actual_enemy_hp, max_enemy_hp)
+	UI:CallEvent("EnemyShield", actual_enemy_hp, max_enemy_hp);
+end
+Events.Subscribe("iCharacter.EnemyShield", EnemyShield)
+
+
+function CurrrentEnemy(isolado)
+	EnemyShield(isolado['sp'], isolado['max_sp'])
+	EnemyHP(isolado['hp'], isolado['max_hp'])
+end
+Events.Subscribe("Isolado.SetEnemyStatusBar", CurrrentEnemy)
+
+
 function SetGrenade(actual_number_of_grenades, max_number_of_grenades)
 	UI:CallEvent("SetGrenade", actual_number_of_grenades, max_number_of_grenades);
 end
@@ -116,7 +128,7 @@ Events.Subscribe("iCharacter.SetGrenade", SetGrenade)
 SetGrenade(3, 3)
 
 function SetBullet(actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag)
-	UI:CallEvent("SetBullet", actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag);
+	UI:CallEvent("SetBullet", actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag)
 end
 Events.Subscribe("iCharacter.SetBullet", SetBullet);
 

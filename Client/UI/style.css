@@ -230,3 +230,7 @@ html {
 #total-bullets {
   font-size: 11px;
 }
+
+#enemy-shield {
+  height: 8px;
+}

@@ -38,7 +38,6 @@ function Shield:Recharge()
 			return false
 		end
 		if self.Player then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
-		return false
 	end, self.RechargeSpeed)
 end
 
@@ -51,6 +50,7 @@ function Shield:TakeDamage(damage)
 		if self.Player then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
 		return true
 	end
+	return false
 end
 
 
