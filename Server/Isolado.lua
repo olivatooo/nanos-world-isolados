@@ -43,9 +43,17 @@ end
 
 
 function Isolado:Death()
-	self.Character:Subscribe("Death", function(_)
+	self.Character:Subscribe("Death", function(char)
 		self.HP:Destroy()
 		self.Shield:Destroy()
+		Timer.SetTimeout(function()
+			if char and char:IsValid() then
+				Particle(char:GetLocation(),Rotator(0, 0, 0),"nanos-world::P_Explosion",true, true)
+				Events.BroadcastRemote("SpawnSound", char:GetLocation(), "nanos-world::A_Explosion_Large", false)
+
+				char:Destroy()
+			end
+		end, 5000)
 	end)
 end
 
@@ -78,8 +86,10 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 
 	self.Character:SetHealth(self.HP.HP)
 
+	self:Death()
 
 	if self.Player then
+		self.Character:SetTeam(1)
 		self.Exp = Experience(self.Player, 0, 1)
 		self.Player:Possess(self.Character)
 		SpawnGenericToolGun()
