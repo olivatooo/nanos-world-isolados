@@ -14,7 +14,9 @@
 		<script src="screen_effects.js"></script>
 		<script src="enemy_hp.js"></script>
 		<script src="player_hp.js"></script>
+		<script src="weapon_comparison.js"></script>
 		<script src="bullet.js"></script>
+		<script src="weapon_cycler.js"></script>
 
 		<span class="blood" id="bleeding-screen" style="display:none;"></span>
 		<span class="speed" id="speed-screen" style="display:none;"></span>
@@ -84,6 +86,10 @@
 
 
 		<span class="bullet-container">
+
+			<div id="weapon-cycle-container">
+			</div>
+
 			<div>
 				<div class="w3-border margin-8">
 					<div class="w3-sand grenade-container" id="grenade-bar">
@@ -101,20 +107,19 @@
 			</div>
 		</span>
 
-		<div class="top-left weapon-container-comparisson rarity-common shadow">
+		<div class="top-left weapon-container-comparisson rarity-common shadow" id="weapon-comparison">
 
-			weapon in ground:
-			<ul class="w3-ul w3-border">
-				<li> <i class="ra ra-sword ra-lg"></i> Damage: 26 <span style="color: lime">▲<span></li>
-				<li>  <i class="ra  ra-archery-target  ra-lg"></i> Precision: 88%  <span style="color: red">▼ </span></li>
-				<li>  <i class="ra ra-ammo-bag  ra-lg"></i> Fire Rate: 12/s <span style="color: yellow">■</span></li>
-			</ul>
-			<hr>
 			your weapon:
 			<ul class="w3-ul w3-border">
-				<li> <i class="ra ra-sword ra-lg"></i> Damage: 26 <span style="color: lime">▲<span></li>
-				<li>  <i class="ra  ra-archery-target  ra-lg"></i> Precision: 88%  <span style="color: red">▼ </span></li>
-				<li>  <i class="ra ra-ammo-bag  ra-lg"></i> Fire Rate: 12/s <span style="color: yellow">■</span></li>
+				<li> <i class="ra ra-sword ra-lg"></i> Damage: <span id="weapon_a_damage"></span> </li>
+				<li>  <i class="ra  ra-archery-target  ra-lg"></i> Precision: <span id="weapon_a_precision"></span> </li>
+				<li>  <i class="ra ra-ammo-bag  ra-lg"></i> Fire Rate: <span id="weapon_a_fire_rate"></span></ul>
+			<hr>
+			weapon in ground:
+			<ul class="w3-ul w3-border">
+				<li> <i class="ra ra-sword ra-lg"></i> Damage: <span id="weapon_b_damage"></span> </li>
+				<li>  <i class="ra  ra-archery-target  ra-lg"></i> Precision: <span id="weapon_b_precision"></span> </li>
+				<li>  <i class="ra ra-ammo-bag  ra-lg"></i> Fire Rate: <span id="weapon_b_fire_rate"></span></ul>
 			</ul>
 		</div>
 

@@ -290,3 +290,14 @@ html {
   background-color: rgba(255, 0, 0, 0.5);
   background-image: url("https://cdn.iconscout.com/icon/free/png-256/prohibited-entry-forbidden-no-not-37995.png");
 }
+
+.weapon-cycler {
+  background-color: rgba(111, 111, 111, 0.5);
+  color: white;
+  font-weight: 900;
+  margin-bottom: 32px;
+  opacity: 0.5;
+  margin-left: auto;
+  margin-right: 0;
+  width: 33%;
+}

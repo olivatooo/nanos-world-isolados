@@ -40,6 +40,11 @@ setmetatable(Gun, {
 })
 
 
+function GetGunValue(weapon)
+	return math.ceil( (weapon:GetDamage() * (1/weapon:GetCadence()))/1000 )
+end
+
+
 -- Utility function to know time to kill an enemy
 function TTK(enemy_hp, weapon_damage, weapon_cadence, weapon_number_of_bullets)
 	return enemy_hp/((weapon_number_of_bullets*weapon_damage)*(1/weapon_cadence))
@@ -48,6 +53,5 @@ end
 
 function Gun.new(location, rotation, level, weapon_type, rarity)
 	local self = setmetatable({}, Gun)
-	weapon_type(location, rotation, level + rarity)
-	return self
+	return weapon_type(location, rotation, level + rarity)
 end

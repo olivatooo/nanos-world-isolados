@@ -1,5 +1,6 @@
 UI = WebUI("ICharacter UI", "file:///UI/index.html",true)
 World.SpawnDefaultSun()
+Package.Require("Slot.lua")
 
 Isolado = {
 	MaxHP = 0,
@@ -64,95 +65,127 @@ function UpdateLocalCharacter(character)
 			end)
 		end
 	end)
+	character:Subscribe("Highlight", function(self, direction, object)
+		local weapon = character:GetPicked()
+		if weapon and
+			weapon:GetType() == "Weapon" and
+			object and
+			object:GetType() == "Weapon" and
+			object ~= weapon
+			then
+				if direction then
+					local weapon_a_damage = weapon:GetDamage() * weapon:GetBulletCount()
+					local weapon_b_damage = object:GetDamage() * object:GetBulletCount()
 
-	-- Sets on character an event to remove the ammo ui when he drops it's weapon
-	character:Subscribe("Drop", function(charac, object)
-		character:Unsubscribe("Fire")
-		character:Unsubscribe("Reload")
+					CompareWeapon(weapon_a_damage, weapon:GetSpread(), string.format("%.2f",1/weapon:GetCadence()), weapon_b_damage,object:GetSpread(), string.format("%.2f",1/object:GetCadence()))
+				else
+					HideWeapon()
+				end
+			end
+		end)
+
+		-- Sets on character an event to remove the ammo ui when he drops it's weapon
+		character:Subscribe("Drop", function(charac, object)
+			character:Unsubscribe("Fire")
+			character:Unsubscribe("Reload")
+		end)
+
+		HideWeapon()
+	end
+
+	Grenades = 3
+	-- TODO: Create a power up module that can be used by pressing F
+	Client.Subscribe("KeyPress", function(key_name)
+		if key_name == "F" then
+			if Grenades > 0 then
+				Grenades = Grenades - 1
+				SetGrenade(Grenades, 3)
+				Events.CallRemote("PowerUp")
+			end
+		end
 	end)
 
-end
-
-Grenades = 3
--- TODO: Create a power up module that can be used by pressing F
-Client.Subscribe("KeyPress", function(key_name)
-	if key_name == "F" then
-		if Grenades > 0 then
-			Grenades = Grenades - 1
-			SetGrenade(Grenades, 3)
-			Events.CallRemote("PowerUp")
-		end
+	function DamageHandler(actual_hp, max_hp, actual_sp, max_sp)
+		max_hp = max_hp or Isolado.MaxHP
+		PlayerHP(actual_hp, max_hp)
+		max_sp = max_sp or Isolado.MaxSP
+		UpdateShield(actual_sp, max_sp)
 	end
-end)
+	Events.Subscribe("Isolado.DamageHandler", DamageHandler)
 
-function DamageHandler(actual_hp, max_hp, actual_sp, max_sp)
-	max_hp = max_hp or Isolado.MaxHP
-	PlayerHP(actual_hp, max_hp)
-	max_sp = max_sp or Isolado.MaxSP
-	UpdateShield(actual_sp, max_sp)
-end
-Events.Subscribe("Isolado.DamageHandler", DamageHandler)
+	function UpdateShield(actual_shield, max_shield)
+		UI:CallEvent("PlayerShield", actual_shield, max_shield)
+	end
+	Events.Subscribe("Shield.Update", UpdateShield)
 
-function UpdateShield(actual_shield, max_shield)
-	UI:CallEvent("PlayerShield", actual_shield, max_shield)
-end
-Events.Subscribe("Shield.Update", UpdateShield)
+	function PlayerExperience(actual_exp, max_exp, lvl)
+		UI:CallEvent("PlayerExperience", actual_exp, max_exp, lvl)
+	end
+	Events.Subscribe("Experience.SetExperience", PlayerExperience)
 
-function PlayerExperience(actual_exp, max_exp, lvl)
-	UI:CallEvent("PlayerExperience", actual_exp, max_exp, lvl)
-end
-Events.Subscribe("Experience.SetExperience", PlayerExperience)
+	function EnemyHP(actual_enemy_hp, max_enemy_hp)
+		UI:CallEvent("EnemyHP", actual_enemy_hp, max_enemy_hp);
+	end
+	Events.Subscribe("iCharacter.EnemyHP", EnemyHP)
 
-function EnemyHP(actual_enemy_hp, max_enemy_hp)
-	UI:CallEvent("EnemyHP", actual_enemy_hp, max_enemy_hp);
-end
-Events.Subscribe("iCharacter.EnemyHP", EnemyHP)
-
-function EnemyShield(actual_enemy_hp, max_enemy_hp)
-	UI:CallEvent("EnemyShield", actual_enemy_hp, max_enemy_hp);
-end
-Events.Subscribe("iCharacter.EnemyShield", EnemyShield)
+	function EnemyShield(actual_enemy_hp, max_enemy_hp)
+		UI:CallEvent("EnemyShield", actual_enemy_hp, max_enemy_hp);
+	end
+	Events.Subscribe("iCharacter.EnemyShield", EnemyShield)
 
 
-function CurrrentEnemy(isolado)
-	EnemyShield(isolado['sp'], isolado['max_sp'])
-	EnemyHP(isolado['hp'], isolado['max_hp'])
-end
-Events.Subscribe("Isolado.SetEnemyStatusBar", CurrrentEnemy)
+	function CurrrentEnemy(isolado)
+		EnemyShield(isolado['sp'], isolado['max_sp'])
+		EnemyHP(isolado['hp'], isolado['max_hp'])
+	end
+	Events.Subscribe("Isolado.SetEnemyStatusBar", CurrrentEnemy)
 
 
-function SetGrenade(actual_number_of_grenades, max_number_of_grenades)
-	UI:CallEvent("SetGrenade", actual_number_of_grenades, max_number_of_grenades);
-end
-Events.Subscribe("iCharacter.SetGrenade", SetGrenade)
-SetGrenade(3, 3)
+	function SetGrenade(actual_number_of_grenades, max_number_of_grenades)
+		UI:CallEvent("SetGrenade", actual_number_of_grenades, max_number_of_grenades);
+	end
+	Events.Subscribe("iCharacter.SetGrenade", SetGrenade)
+	SetGrenade(3, 3)
 
-function SetBullet(actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag)
-	UI:CallEvent("SetBullet", actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag)
-end
-Events.Subscribe("iCharacter.SetBullet", SetBullet);
+	function SetBullet(actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag)
+		UI:CallEvent("SetBullet", actual_number_of_bullets, max_number_in_single_clip, total_ammo_in_bag)
+	end
+	Events.Subscribe("iCharacter.SetBullet", SetBullet);
 
-function ApplyShield(shield_screen_effect_amount)
-	UI:CallEvent("iCharacter.ApplyShield", shield_screen_effect_amount);
-end
-Events.Subscribe("ApplyShield", ApplyShield);
+	function ApplyShield(shield_screen_effect_amount)
+		UI:CallEvent("iCharacter.ApplyShield", shield_screen_effect_amount);
+	end
+	Events.Subscribe("ApplyShield", ApplyShield);
 
-function ApplySpeed(speed_screen_effect_amount)
-	UI:CallEvent("iCharacter.ApplySpeed", speed_screen_effect_amount);
-end
-Events.Subscribe("ApplySpeed", ApplySpeed)
+	function ApplySpeed(speed_screen_effect_amount)
+		UI:CallEvent("iCharacter.ApplySpeed", speed_screen_effect_amount);
+	end
+	Events.Subscribe("ApplySpeed", ApplySpeed)
 
-function ApplyBleeding(bleeding_screen_effect_amount)
-	UI:CallEvent("iCharacter.ApplyBleeding", bleeding_screen_effect_amount);
-end
-Events.Subscribe("ApplyBleeding", ApplyBleeding)
+	function ApplyBleeding(bleeding_screen_effect_amount)
+		UI:CallEvent("iCharacter.ApplyBleeding", bleeding_screen_effect_amount);
+	end
+	Events.Subscribe("ApplyBleeding", ApplyBleeding)
 
-function ApplyFreezing(freezing_screen_effect_amount)
-	UI:CallEvent("iCharacter.ApplyFreezing", freezing_screen_effect_amount);
-end
-Events.Subscribe("iCharacter.ApplyFreezing", ApplyFreezing)
+	function ApplyFreezing(freezing_screen_effect_amount)
+		UI:CallEvent("iCharacter.ApplyFreezing", freezing_screen_effect_amount);
+	end
+	Events.Subscribe("iCharacter.ApplyFreezing", ApplyFreezing)
 
-function ApplyPoison(poison_screen_effect_amount)
-	UI:CallEvent("ApplyPoison", poison_screen_effect_amount);
-end
-Events.Subscribe("iCharacter.ApplyPoison", ApplyPoison)
+	function ApplyPoison(poison_screen_effect_amount)
+		UI:CallEvent("ApplyPoison", poison_screen_effect_amount);
+	end
+	Events.Subscribe("iCharacter.ApplyPoison", ApplyPoison)
+
+
+	function CompareWeapon(a_damage, a_precision, a_fire_rate, b_damage, b_precision, b_fire_rate)
+		UI:CallEvent("CompareWeapon", a_damage, a_precision, a_fire_rate, b_damage, b_precision, b_fire_rate);
+	end
+
+	function HideWeapon()
+		UI:CallEvent("HideWeaponComparison")
+	end
+
+
+
+
