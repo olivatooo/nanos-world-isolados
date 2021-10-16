@@ -34,10 +34,10 @@ function Shield:Recharge()
 		self.SP = self.SP + self.RechargeAmount
 		if self.SP >= self.MaxSP then
 			self.SP = self.MaxSP
-			if self.Player then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
+			if self.Player and self.Player:IsValid() then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
 			return false
 		end
-		if self.Player then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
+		if self.Player and self.Player:IsValid() then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
 	end, self.RechargeSpeed)
 end
 
@@ -46,17 +46,21 @@ function Shield:TakeDamage(damage)
 	if self.SP > 0 then
 		self:RechargeTimeout()
 		self.SP  = self.SP - damage
-		if self.SP < 0 then self.SP = 0 end
-		if self.Player then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
+		if self.SP < 0 then
+			self.Character:ApplyDamage(self.SP * -1)
+			self.SP = 0
+		end
+		if self.Player and self.Player:IsValid() then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
 		return true
 	end
 	return false
 end
 
 
-function Shield.new(player, sp, max_sp, recharge_amount, recharge_delay, recharge_speed)
+function Shield.new(char, player, sp, max_sp, recharge_amount, recharge_delay, recharge_speed)
 	local self = setmetatable({}, Shield)
 	self.Player = player
+	self.Character = char
 	self.SP = sp or 1
 	self.MaxSP = max_sp or 1
 	self.RechargeAmount = 5

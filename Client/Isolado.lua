@@ -64,7 +64,6 @@ function UpdateLocalCharacter(character)
 				SetBullet(weapon:GetAmmoClip(), weapon:GetAmmoToReload(), weapon:GetAmmoBag())
 			end)
 
-			Package.Log("Picked Up Something")
 			SaveIntoSlot(CurrSlot, object)
 		end
 	end)
@@ -80,7 +79,6 @@ function UpdateLocalCharacter(character)
 				if direction then
 					local weapon_a_damage = weapon:GetDamage() * weapon:GetBulletCount()
 					local weapon_b_damage = object:GetDamage() * object:GetBulletCount()
-
 					CompareWeapon(weapon_a_damage, weapon:GetSpread(), string.format("%.2f",1/weapon:GetCadence()), weapon_b_damage,object:GetSpread(), string.format("%.2f",1/object:GetCadence()))
 				else
 					HideWeapon()

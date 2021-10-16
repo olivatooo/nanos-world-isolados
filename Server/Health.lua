@@ -36,11 +36,11 @@ function Health:Recharge()
 			if self.HP >= self.MaxHP then
 				self.HP = self.MaxHP
 				self.Character:SetHealth(self.HP)
-				if self.Player then Events.CallRemote("Health.Update", self.Player, self.HP, self.MaxHP) end
+				if self.Player and self.Player:IsValid() then Events.CallRemote("Health.Update", self.Player, self.HP, self.MaxHP) end
 				return false
 			end
 			self.Character:SetHealth(self.HP)
-			if self.Player then Events.CallRemote("Health.Update", self.Player, self.HP, self.MaxHP) end
+			if self.Player and self.Player:IsValid() then Events.CallRemote("Health.Update", self.Player, self.HP, self.MaxHP) end
 		else
 			return false
 		end

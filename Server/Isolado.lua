@@ -72,7 +72,7 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 
 	self.Player = player or nil
 
-	self.Shield = Shield(self.Player, sp, max_sp)
+	self.Shield = Shield(self.Character, self.Player, sp, max_sp)
 	self.HP = Health(self.Character, player, hp, max_hp)
 
 	self.Character:SetHealth(self.HP.HP)
