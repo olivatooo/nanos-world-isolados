@@ -2,6 +2,7 @@ Package.Require("Shield.lua")
 Package.Require("Experience.lua")
 Package.Require("Health.lua")
 Package.Require("PowerUp.lua")
+Package.Require("Slot.lua")
 
 Isolado = {}
 Isolado.__index = Isolado

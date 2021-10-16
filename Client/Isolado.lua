@@ -63,8 +63,12 @@ function UpdateLocalCharacter(character)
 			character:Subscribe("Reload", function(charac, weapon, ammo_to_reload)
 				SetBullet(weapon:GetAmmoClip(), weapon:GetAmmoToReload(), weapon:GetAmmoBag())
 			end)
+
+			Package.Log("Picked Up Something")
+			SaveIntoSlot(CurrSlot, object)
 		end
 	end)
+
 	character:Subscribe("Highlight", function(self, direction, object)
 		local weapon = character:GetPicked()
 		if weapon and

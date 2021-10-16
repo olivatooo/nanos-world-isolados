@@ -1,5 +1,4 @@
 function EnemyHP(actual, total) {
-  console.log(actual, total);
   let field = document.getElementById("enemy-hp");
   if (actual == 0 || total == 0) {
     field.classList.add("explode");
@@ -29,7 +28,6 @@ function EnemyHP(actual, total) {
 Events.Subscribe("EnemyHP", EnemyHP);
 
 function EnemyShield(actual, total) {
-  console.log(actual, total);
   let field = document.getElementById("enemy-shield");
   if (actual == 0 || total == 0) {
     field.classList.add("explode");
