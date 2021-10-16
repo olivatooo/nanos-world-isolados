@@ -8,8 +8,12 @@ setmetatable(Shield, {
 
 
 function Shield:Destroy()
-	Timer.ClearTimeout(self.RechargeTimer)
-	Timer.ClearInterval(self.RechargeInterval)
+	if self.RechargeTimer then
+		Timer.ClearTimeout(self.RechargeTimer)
+	end
+	if self.RechargeInterval then
+		Timer.ClearInterval(self.RechargeInterval)
+	end
 end
 
 
@@ -61,11 +65,11 @@ function Shield.new(char, player, sp, max_sp, recharge_amount, recharge_delay, r
 	local self = setmetatable({}, Shield)
 	self.Player = player
 	self.Character = char
-	self.SP = sp or 1
-	self.MaxSP = max_sp or 1
-	self.RechargeAmount = 5
-	self.RechargeDelay = 2000
-	self.RechargeSpeed = 200
+	self.SP = sp or 0
+	self.MaxSP = max_sp or 0
+	self.RechargeAmount = recharge_amount or 0
+	self.RechargeDelay = recharge_delay or 100000000
+	self.RechargeSpeed = recharge_speed or 2000000
 
 	self.RechargeTimer = nil
 	self.RechargeInterval = nil

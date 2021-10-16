@@ -8,8 +8,12 @@ setmetatable(Health, {
 
 
 function Health:Destroy()
-	Timer.ClearTimeout(self.RechargeTimer)
-	Timer.ClearInterval(self.RechargeInterval)
+	if self.RechargeTimer then
+		Timer.ClearTimeout(self.RechargeTimer)
+	end
+	if self.RechargeInterval then
+		Timer.ClearInterval(self.RechargeInterval)
+	end
 end
 
 
