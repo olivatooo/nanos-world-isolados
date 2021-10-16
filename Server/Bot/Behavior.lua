@@ -83,7 +83,7 @@ end
 
 
 function BotCombatSniper(self)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	if bot and bot:IsValid() then
 		local weapon = bot:GetPicked()
 		local enemy = self.Enemies[#self.Enemies]
@@ -115,7 +115,7 @@ end
 
 
 function BotRunNGun(self)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 
 	if bot and bot:IsValid() then
 		local weapon = bot:GetPicked()
@@ -144,7 +144,7 @@ end
 
 
 function BotCS16(self)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 
 	if bot and bot:IsValid() then
 		local weapon = bot:GetPicked()
@@ -175,7 +175,7 @@ end
 
 
 function BotMLG(self)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	if bot and bot:IsValid() then
 		local weapon = bot:GetPicked()
 		local enemy = self.Enemies[#self.Enemies]
@@ -229,7 +229,7 @@ end
 
 
 function DefaultCombatMovement(self)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 
 	if bot and bot:IsValid() then
 		local weapon = bot:GetPicked()
@@ -264,7 +264,7 @@ end
 
 
 function DefaultDefensiveBehavior(self)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	local enemy = self.Enemies[#self.Enemies]
 	if bot and bot:IsValid() then
 		if enemy and enemy:IsValid() and enemy:GetHealth()>0 then
@@ -289,7 +289,7 @@ end
 BotCombatFunctions = {DefaultCombatMovement, BotCombatSniper, BotRunNGun ,BotCS16, BotMLG}
 
 function Boss(self)
-	local char = self.Character
+	local char = self.Isolado.Character
 	local health = char:GetHealth()
 	char:SetMaxHealth(health*2)
 	char:SetHealth(health*2)
@@ -297,19 +297,19 @@ function Boss(self)
 end
 
 function Small(self)
-	local char = self.Character
+	local char = self.Isolado.Character
 	char:SetScale(Vector(0.5,0.5,0.5))
 end
 
 
 function Sonic(self)
-	local char = self.Character
+	local char = self.Isolado.Character
 	char:SetSpeedMultiplier(4)
 end
 
 
 function Kamikaze(self)
-	local character = self.Character
+	local character = self.Isolado.Character
 	character:SetSpeedMultiplier(2)
 	character:SetMaterialScalarParameter("Metallic", 0.5)
 	character:SetMaterialScalarParameter("Opacity", 0.1)
@@ -324,7 +324,7 @@ end
 
 
 function Bombardier(self)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	Timer.SetInterval(function()
 		local enemy = self.Enemies[#self.Enemies]
 		if bot and bot:IsValid() then

@@ -1,5 +1,5 @@
-Package.Require("Utils.lua")
-Package.Require("Bot/BotBehavior.lua")
+-- Package.Require("Utils.lua")
+Package.Require("Bot/Behavior.lua")
 
 
 CharacterBot = {}
@@ -19,14 +19,24 @@ setmetatable(Bot, {
 })
 
 
+-- Check if weapon is in floor
+function WeaponIsInFloor(weapon)
+	if weapon and
+		weapon:GetType() == "Weapon" and
+		weapon:GetHandler() == nil then
+		return true
+	end
+	return false
+end
+
 function Bot:Color()
-	local team = self.Character:GetTeam()
+	local team = self.Isolado.Character:GetTeam()
 	local color = BotTeamColor[team]
 	if color then
-		self.Character:SetMaterialColorParameter("Tint", color)
+		self.Isolado.Character:SetMaterialColorParameter("Tint", color)
 	else
 		BotTeamColor[team] = Color.Random()
-		self.Character:SetMaterialColorParameter("Tint", BotTeamColor[team])
+		self.Isolado.Character:SetMaterialColorParameter("Tint", BotTeamColor[team])
 	end
 end
 
@@ -34,7 +44,7 @@ end
 function Bot:AlertTeam(enemy)
 	if self.Scream == false then
 		self.Scream = true
-		local bot = self.Character
+		local bot = self.Isolado.Character
 		local scream = Trigger(bot:GetLocation(), Rotator(), self.ScreamRange, TriggerType.Sphere, false, Color(1, 0, 1))
 		scream:AttachTo(bot, AttachmentRule.SnapToTarget)
 		scream:Subscribe("BeginOverlap", function (_, friend)
@@ -52,8 +62,8 @@ end
 
 
 function Bot:SubscribeTakeDamage()
-	local bot = self.Character
-	self.Character:Subscribe("TakeDamage", function(char, damage, _, _, _, instigator)
+	local bot = self.Isolado.Character
+	self.Isolado.Character:Subscribe("TakeDamage", function(char, damage, _, _, _, instigator)
 		if instigator and instigator:GetType() == "Player" then
 			instigator = instigator:GetControlledCharacter()
 		end
@@ -68,7 +78,7 @@ end
 
 
 function Bot:SubscribeDeath()
-	self.Character:Subscribe("Death", function(char, _, _, _, _, _)
+	self.Isolado.Character:Subscribe("Death", function(char, _, _, _, _, _)
 		char:Drop()
 		for k,v in pairs(Bots) do
 			for i, b in pairs(v.Enemies) do
@@ -81,21 +91,6 @@ function Bot:SubscribeDeath()
 		if char and self.Movement then
 			Timer.ClearInterval(self.Movement)
 		end
-
-		Timer.SetTimeout(function(char)
-			-- DELETE ALL ENTITIES ATTACHED???
-			-- local attached = char:GetAttachedEntities()
-			-- for _,v in pairs(attached) do
-			--	v:Destroy()
-			-- end
-			--
-			-- Explode on death
-			if char and char:IsValid() then
-				Particle(char:GetLocation(),Rotator(0, 0, 0),"nanos-world::P_Explosion",true, true)
-				Events.BroadcastRemote("SpawnSound", char:GetLocation(), "nanos-world::A_Explosion_Large", false)
-				char:Destroy()
-			end
-		end, 10000, char)
 		Events.Call("Bot.Death", self)
 	end)
 end
@@ -113,7 +108,7 @@ end
 -- Sensors to bot in the world
 function Bot:Aware(trigger, aware_chance, offset)
 	offset = offset or Vector(0,0,0)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	trigger:AttachTo(bot, AttachmentRule.SnapToTarget)
 	trigger:SetRelativeLocation(offset)
 	self:SeeEnemy(trigger, aware_chance)
@@ -121,7 +116,7 @@ end
 
 
 function Bot:Movement()
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	if bot and bot:IsValid() then
 		bot:SetGaitMode(GaitMode.Walking)
 		bot:SetWeaponAimMode(AimMode.None)
@@ -149,7 +144,7 @@ end)
 
 
 function Bot:SeeEnemy(trigger, aware_chance)
-	local bot_character = self.Character
+	local bot_character = self.Isolado.Character
 	local bot = self
 	local trigger_options = {"EndOverlap", "BeginOverlap"}
 	for t = 1, #trigger_options do
@@ -173,7 +168,7 @@ end
 
 
 function Bot:EnemyFoundBehavior()
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	local weapon = bot:GetPicked()
 	local movement_timer = self.Movement
 	if movement_timer then
@@ -188,7 +183,7 @@ end
 
 
 function Bot:PickupCloseWeapon(trigger)
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	trigger:AttachTo(bot, AttachmentRule.SnapToTarget)
 	trigger:Subscribe("BeginOverlap", function (_, weapon)
 		if bot and
@@ -203,16 +198,18 @@ end
 
 function Bot:IdleMovementBehavior()
 	if self.Debug then Bot:DebugText("I'm idle") end
-	local bot = self.Character
+	local bot = self.Isolado.Character
 	local bot_movement = Timer.SetInterval(self.IdleBehavior , self.IdleTime, bot)
 	self.Movement = bot_movement
 end
 
 
-function Bot.new(location, team, combat_behavior, defensive_behavior, idle_behavior, player_level)
+function Bot.new(location, team, level, hp, shield)
 	local self = setmetatable({}, Bot)
-	self.Character = Character(location, Rotator(0, 0, 0), "nanos-world::SK_Mannequin")
-	self.Character:SetTeam(team)
+
+	self.Isolado = Isolado(location, Rotator(), "nanos-world::SK_Mannequin", nil, math.random(100, 200), 200)
+	team = team or math.random(2,10000000)
+	self.Isolado.Character:SetTeam(team)
 	self.Movement = nil
 
 	self.CombatReactionTime = math.random(250, 750)
@@ -224,7 +221,7 @@ function Bot.new(location, team, combat_behavior, defensive_behavior, idle_behav
 	self.WeaponAwareChance = 100
 
 	self.FOVRadius = math.random(2000,5000)
-	self.FOVChance = 100
+	self.FOVChance = 80
 
 	self.ScreamRange = 1000
 	self.Scream = false
@@ -243,10 +240,10 @@ function Bot.new(location, team, combat_behavior, defensive_behavior, idle_behav
 	)
 
 
-	self.CombatBehavior = combat_behavior or BotCombatFunctions[math.random(#BotCombatFunctions)]
-	self.DefensiveBehavior = defensive_behavior or DefaultDefensiveBehavior
+	self.CombatBehavior = BotCombatFunctions[math.random(#BotCombatFunctions)]
+	self.DefensiveBehavior =  DefaultDefensiveBehavior
 	self.IdleBehavior = idle_behavior or DefaultMovement
-	CharacterBot[self.Character] = self
+	CharacterBot[self.Isolado.Character] = self
 	self:Surroundings()
 	self:IdleMovementBehavior()
 	self:SubscribeDeath()
