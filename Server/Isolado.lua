@@ -1,4 +1,5 @@
 Package.Require("Shield.lua")
+Package.Require("Balloon.lua")
 Package.Require("Experience.lua")
 Package.Require("Health.lua")
 Package.Require("PowerUp.lua")
@@ -81,6 +82,7 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 	if self.Player then
 		self.Exp = Experience(self.Player, 0, 1)
 		self.Player:Possess(self.Character)
+		SpawnGenericToolGun()
 		self:Disconnect()
 	end
 

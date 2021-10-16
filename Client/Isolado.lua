@@ -1,3 +1,5 @@
+Package.Require("Balloon.lua")
+
 UI = WebUI("ICharacter UI", "file:///UI/index.html",true)
 World.SpawnDefaultSun()
 Package.Require("Slot.lua")
