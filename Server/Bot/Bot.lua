@@ -209,10 +209,9 @@ function Bot:AlertTeam(enemy)
 
 	function Bot.new(location, team, level, hp, shield)
 		local self = setmetatable({}, Bot)
-
-		self.Isolado = Isolado(location, Rotator(), "nanos-world::SK_Mannequin", nil, math.random(100, 200), 200)
-		team = team or math.random(2,10000000)
-		self.Isolado.Character:SetTeam(team)
+		self.Isolado = Isolado(location, Rotator(0, math.random(180), 0), "nanos-world::SK_Mannequin", nil, math.random(100, 200), 200)
+		self.Team = team or math.random(2,10000000)
+		self.Isolado.Character:SetTeam(self.Team)
 		self.Movement = nil
 
 		self.CombatReactionTime = math.random(250, 750)
