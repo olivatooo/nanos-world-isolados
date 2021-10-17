@@ -34,6 +34,9 @@ end
 
 
 function Shield:Recharge()
+	if self.Player then
+		Events.CallRemote("SpawnSound", self.Player, Vector(), "package///isolados/Client/sound_effects/shield_recharging.ogg", true, 5)
+	end
 	self.RechargeInterval = Timer.SetInterval(function()
 		self.SP = self.SP + self.RechargeAmount
 		if self.SP >= self.MaxSP then
@@ -51,6 +54,9 @@ function Shield:TakeDamage(damage)
 		self:RechargeTimeout()
 		self.SP  = self.SP - damage
 		if self.SP < 0 then
+			if self.Player then
+				Events.CallRemote("SpawnSound", self.Player, Vector(), "package///isolados/Client/sound_effects/shield_broken.ogg", true, 5)
+			end
 			self.Character:ApplyDamage(self.SP * -1)
 			self.SP = 0
 		end
@@ -65,11 +71,11 @@ function Shield.new(char, player, sp, max_sp, recharge_amount, recharge_delay, r
 	local self = setmetatable({}, Shield)
 	self.Player = player
 	self.Character = char
-	self.SP = sp or 0
-	self.MaxSP = max_sp or 0
-	self.RechargeAmount = recharge_amount or 0
-	self.RechargeDelay = recharge_delay or 100000000
-	self.RechargeSpeed = recharge_speed or 2000000
+	self.SP = sp or 100
+	self.MaxSP = max_sp or 100
+	self.RechargeAmount = recharge_amount or 20
+	self.RechargeDelay = recharge_delay or 5000
+	self.RechargeSpeed = recharge_speed or 200
 
 	self.RechargeTimer = nil
 	self.RechargeInterval = nil

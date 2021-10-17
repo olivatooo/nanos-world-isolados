@@ -27,12 +27,16 @@ function SpawnGenericToolGun(location, rotation)
 	tool_gun:SetMaterialColorParameter("Emissive", Color.ORANGE * 500)
 
 	tool_gun:Subscribe("PickUp", function(weapon, char)
-		Events.CallRemote("PickUpToolGun_BalloonTool" , char:GetPlayer(), weapon, char)
+		if char:GetPlayer() then
+			Events.CallRemote("PickUpToolGun_BalloonTool" , char:GetPlayer(), weapon, char)
+		end
 	end)
 
 
 	tool_gun:Subscribe("Drop", function(weapon, char)
-		Events.CallRemote("DropToolGun_BalloonTool", char:GetPlayer(), weapon, char)
+		if char:GetPlayer() then
+			Events.CallRemote("DropToolGun_BalloonTool", char:GetPlayer(), weapon, char)
+		end
 	end)
 
 	return tool_gun
@@ -109,8 +113,16 @@ Timer.SetInterval(function()
 		-- If this balloon is higher enough, pops it
 		if (balloon:IsValid() and balloon:GetLocation().Z > 6000 + math.random(10000)) then
 			local cable = balloon:GetAttachedEntities()[1]
-			-- ADD THIS LATER
-			-- Package.Log(cable:GetAttachedEntities())
+			if cable and cable:IsValid() then
+				local attach = cable:GetAttachedStartTo()
+				if attach and attach:GetType() == "Weapon" then
+					if balloon:GetValue("Player") then
+						Events.Call("Experience.Add", balloon:GetValue("Player"), 1)
+						Events.CallRemote("SpawnSound", balloon:GetValue("Player"), Vector(), "package///isolados/Client/sound_effects/money_in.ogg", true, 2)
+					end
+					attach:Destroy()
+				end
+			end
 			balloon:Destroy()
 		end
 	end

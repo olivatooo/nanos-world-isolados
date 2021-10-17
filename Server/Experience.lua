@@ -1,4 +1,5 @@
 Experience = {}
+PlayerExperience = {}
 Experience.__index = Experience
 setmetatable(Experience, {
 	__call = function(cls, ...)
@@ -12,11 +13,19 @@ function GetExperienceToNextLevel(level)
 end
 
 
+function Experience.Adds(player, amount)
+	PlayerExperience[player]:Add(amount)
+end
+Events.Subscribe("Experience.Add", Experience.Adds)
+
+
 function Experience:Add(amount)
 	self.Exp = self.Exp + amount
 	if self.Exp >= self.MaxExp then
 		self.Level = self.Level + 1
 		self.MaxExp = GetExperienceToNextLevel(self.Level)
+		self.Exp = 0
+		Events.CallRemote("SpawnSound", self.Player, Vector(), "package///isolados/Client/sound_effects/level_up.ogg", true, 2)
 	end
 	Events.CallRemote("Experience.SetExperience", self.Player, self.Exp, self.MaxExp, self.Level)
 end
@@ -34,6 +43,7 @@ end
 function Experience.new(player, current_exp, level)
 	local self = setmetatable({}, Experience)
 	self.Player = player
+	PlayerExperience[player] = self
 	self.Level = level
 	self.Exp = current_exp or 0
 	self.MaxExp = GetExperienceToNextLevel(self.Level)
