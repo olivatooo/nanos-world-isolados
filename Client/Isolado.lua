@@ -13,33 +13,33 @@ Isolado = {
 }
 
 Client.Subscribe(
-	"SpawnLocalPlayer",
-	function(local_player)
-		local_player:Subscribe(
-			"Possess",
-			function(player, character)
-				UpdateLocalCharacter(character)
-			end
-		)
+"SpawnLocalPlayer",
+function(local_player)
+	local_player:Subscribe(
+	"Possess",
+	function(player, character)
+		UpdateLocalCharacter(character)
 	end
+	)
+end
 )
 
 Package.Subscribe(
-	"Load",
-	function()
-		Client.SetMouseEnabled(false)
-		Client.SetInputEnabled(true)
-		local local_player = Client.GetLocalPlayer()
-		if (local_player ~= nil) then
-			UpdateLocalCharacter(local_player:GetControlledCharacter())
-			local_player:Subscribe(
-				"Possess",
-				function(player, character)
-					UpdateLocalCharacter(character)
-				end
-			)
+"Load",
+function()
+	Client.SetMouseEnabled(false)
+	Client.SetInputEnabled(true)
+	local local_player = Client.GetLocalPlayer()
+	if (local_player ~= nil) then
+		UpdateLocalCharacter(local_player:GetControlledCharacter())
+		local_player:Subscribe(
+		"Possess",
+		function(player, character)
+			UpdateLocalCharacter(character)
 		end
+		)
 	end
+end
 )
 
 function PlayerHP(actual_hp, max_hp)
@@ -55,10 +55,10 @@ function UpdateLocalCharacter(character)
 	PlayerHP(character:GetHealth(), character:GetMaxHealth())
 
 	character:Subscribe(
-		"TakeDamage",
-		function(charac, damage, damage_type, bone, from_direction, instigator, causer)
-			Sound(Vector(), "nanos-world::A_HitTaken_Feedback", true)
-		end
+	"TakeDamage",
+	function(charac, damage, damage_type, bone, from_direction, instigator, causer)
+		Sound(Vector(), "nanos-world::A_HitTaken_Feedback", true)
+	end
 	)
 
 	local current_picked_item = character:GetPicked()
@@ -68,62 +68,62 @@ function UpdateLocalCharacter(character)
 	end
 
 	character:Subscribe(
-		"PickUp",
-		function(charac, object)
-			if (object:GetType() == "Weapon") then
-				SetBullet(object:GetAmmoClip(), object:GetAmmoToReload(), object:GetAmmoBag())
-				character:Subscribe(
-					"Fire",
-					function(charac, weapon)
-						SetBullet(weapon:GetAmmoClip(), weapon:GetAmmoToReload(), weapon:GetAmmoBag())
-					end
-				)
-
-				-- Sets on character an event to update the UI when he reloads the weapon
-				character:Subscribe(
-					"Reload",
-					function(charac, weapon, ammo_to_reload)
-						SetBullet(weapon:GetAmmoClip(), weapon:GetAmmoToReload(), weapon:GetAmmoBag())
-					end
-				)
-
-				SaveIntoSlot(CurrSlot, object)
+	"PickUp",
+	function(charac, object)
+		if (object:GetType() == "Weapon") then
+			SetBullet(object:GetAmmoClip(), object:GetAmmoToReload(), object:GetAmmoBag())
+			character:Subscribe(
+			"Fire",
+			function(charac, weapon)
+				SetBullet(weapon:GetAmmoClip(), weapon:GetAmmoToReload(), weapon:GetAmmoBag())
 			end
+			)
+
+			-- Sets on character an event to update the UI when he reloads the weapon
+			character:Subscribe(
+			"Reload",
+			function(charac, weapon, ammo_to_reload)
+				SetBullet(weapon:GetAmmoClip(), weapon:GetAmmoToReload(), weapon:GetAmmoBag())
+			end
+			)
+
+			SaveIntoSlot(CurrSlot, object)
 		end
+	end
 	)
 
 	character:Subscribe(
-		"Highlight",
-		function(self, direction, object)
-			local weapon = character:GetPicked()
-			if weapon and weapon:GetType() == "Weapon" and object and object:GetType() == "Weapon" and object ~= weapon then
-				if direction then
-					local weapon_a_damage = weapon:GetDamage() * weapon:GetBulletCount()
-					local weapon_b_damage = object:GetDamage() * object:GetBulletCount()
-					CompareWeapon(
-						weapon_a_damage,
-						weapon:GetSpread(),
-						string.format("%.2f", 1 / weapon:GetCadence()),
-						weapon:GetClipCapacity(),
-						weapon_b_damage,
-						object:GetSpread(),
-						string.format("%.2f", 1 / object:GetCadence()),
-						object:GetClipCapacity()
-					)
-				else
-					HideWeapon()
-				end
+	"Highlight",
+	function(self, direction, object)
+		local weapon = character:GetPicked()
+		if weapon and weapon:GetType() == "Weapon" and object and object:GetType() == "Weapon" and object ~= weapon then
+			if direction then
+				local weapon_a_damage = weapon:GetDamage() * weapon:GetBulletCount()
+				local weapon_b_damage = object:GetDamage() * object:GetBulletCount()
+				CompareWeapon(
+				weapon_a_damage,
+				weapon:GetSpread(),
+				string.format("%.2f", 1 / weapon:GetCadence()),
+				weapon:GetClipCapacity(),
+				weapon_b_damage,
+				object:GetSpread(),
+				string.format("%.2f", 1 / object:GetCadence()),
+				object:GetClipCapacity()
+				)
+			else
+				HideWeapon()
 			end
 		end
+	end
 	)
 
 	-- Sets on character an event to remove the ammo ui when he drops it's weapon
 	character:Subscribe(
-		"Drop",
-		function(charac, object)
-			character:Unsubscribe("Fire")
-			character:Unsubscribe("Reload")
-		end
+	"Drop",
+	function(charac, object)
+		character:Unsubscribe("Fire")
+		character:Unsubscribe("Reload")
+	end
 	)
 
 	HideWeapon()
@@ -132,16 +132,16 @@ end
 Grenades = 3
 -- TODO: Create a power up module that can be used by pressing F
 Client.Subscribe(
-	"KeyPress",
-	function(key_name)
-		if key_name == "F" then
-			if Grenades > 0 then
-				Grenades = Grenades - 1
-				SetGrenade(Grenades, 3)
-				Events.CallRemote("PowerUp")
-			end
+"KeyPress",
+function(key_name)
+	if key_name == "F" then
+		if Grenades > 0 then
+			Grenades = Grenades - 1
+			SetGrenade(Grenades, 3)
+			Events.CallRemote("PowerUp")
 		end
 	end
+end
 )
 
 function DamageHandler(actual_hp, max_hp, actual_sp, max_sp)
@@ -161,6 +161,7 @@ function PlayerExperience(actual_exp, max_exp, lvl)
 	UI:CallEvent("PlayerExperience", actual_exp, max_exp, lvl)
 end
 Events.Subscribe("Experience.SetExperience", PlayerExperience)
+
 
 function EnemyHP(actual_enemy_hp, max_enemy_hp)
 	UI:CallEvent("EnemyHP", actual_enemy_hp, max_enemy_hp)
@@ -216,15 +217,15 @@ Events.Subscribe("iCharacter.ApplyPoison", ApplyPoison)
 
 function CompareWeapon(a_damage, a_precision, a_fire_rate, a_clip_size, b_damage, b_precision, b_fire_rate, b_clip_size)
 	UI:CallEvent(
-		"CompareWeapon",
-		a_damage,
-		a_precision,
-		a_fire_rate,
-		a_clip_size,
-		b_damage,
-		b_precision,
-		b_fire_rate,
-		b_clip_size
+	"CompareWeapon",
+	a_damage,
+	a_precision,
+	a_fire_rate,
+	a_clip_size,
+	b_damage,
+	b_precision,
+	b_fire_rate,
+	b_clip_size
 	)
 end
 

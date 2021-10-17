@@ -1,5 +1,6 @@
 Package.Require("Isolado.lua")
 Package.Require("Gun/Gun.lua")
+Package.Require("Bot/Bot.lua")
 Package.RequirePackage("nanos-world-weapons")
 
 Player.Subscribe("Spawn", function(new_player)
@@ -8,23 +9,23 @@ end)
 
 Package.Subscribe("Load", function()
 	for _,player in pairs(Player.GetAll()) do
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.SMG, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Rifle, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Shotgun, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Pistol, 0)
-
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.SMG, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Rifle, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Shotgun, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Pistol, 0)
-
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.SMG, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Rifle, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Shotgun, 0)
-		Gun(Vector(0, 0, 500), Rotator(), 100, WeaponType.Pistol, 0)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Bot(Vector(1000, 0, 0), 1, 1, 1)
+		Gun(Vector(1000, 0, 0), Rotator(), 1, WeaponType.SMG, 0)
+		Gun(Vector(1000, 0, 0), Rotator(), 1, WeaponType.SMG, 0)
+		Gun(Vector(1000, 0, 0), Rotator(), 1, WeaponType.SMG, 0)
+		Gun(Vector(1000, 0, 0), Rotator(), 1, WeaponType.SMG, 0)
+		Gun(Vector(1000, 0, 0), Rotator(), 1, WeaponType.SMG, 0)
+		Gun(Vector(1000, 0, 0), Rotator(), 1, WeaponType.SMG, 0)
 		-- TODO: Save player state to load this data on join server
 		Isolado(Vector(0, 0, 0), Rotator(), "nanos-world::SK_Mannequin", player, 100, 200, 1, 1, 1, 2, 30, 200)
-		Isolado(Vector(100, 0, 0), Rotator(), "nanos-world::SK_Mannequin", nil, 200, 200, 1, 1, 1, 2, 30, 200)
 	end
 end)
 

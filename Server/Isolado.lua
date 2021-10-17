@@ -7,6 +7,7 @@ Package.Require("Slot.lua")
 
 Isolado = {}
 Isolado.__index = Isolado
+PlayerIsolado = {}
 setmetatable(Isolado, {
 	__call = function(cls, ...)
 		return cls.new(...)
@@ -50,7 +51,6 @@ function Isolado:Death()
 			if char and char:IsValid() then
 				Particle(char:GetLocation(),Rotator(0, 0, 0),"nanos-world::P_Explosion",true, true)
 				Events.BroadcastRemote("SpawnSound", char:GetLocation(), "nanos-world::A_Explosion_Large", false)
-
 				char:Destroy()
 			end
 		end, 5000)
@@ -72,20 +72,14 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 	local self = setmetatable({}, Isolado)
 	-- TODO: Change mesh to an wardrobe system
 	self.Character = Character(location, rotation, mesh)
-
 	self.Speed = speed or 1
 	self.Level = level or 1
-
 	self.Exp = exp or 1
 	self.MaxExp = max_exp or 2
-
 	self.Player = player or nil
-
 	self.Shield = Shield(self.Character, self.Player, sp, max_sp)
 	self.HP = Health(self.Character, player, hp, max_hp)
-
 	self.Character:SetHealth(self.HP.HP)
-
 	self:Death()
 
 	if self.Player then
@@ -94,6 +88,7 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 		self.Player:Possess(self.Character)
 		SpawnGenericToolGun()
 		self:Disconnect()
+		PlayerIsolado[self.Player] = self
 	end
 
 	self:DamageHandler()
