@@ -1,15 +1,20 @@
 <!doctype html>
 <html lang="en">
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 		<link rel="stylesheet" href="./style.css">
 		<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rpg-awesome/0.2.0/css/rpg-awesome.min.css" integrity="sha512-01mG/8rtthZxcE/oLY/1aVBq0UHYxd3r9MgSi33zFQ190gj+BfHY8XeoFiErGyVt1pE68U6InjMq+xkVTSf6yg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+		<link rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/rpg-awesome/0.2.0/css/rpg-awesome.min.css"
+			integrity="sha512-01mG/8rtthZxcE/oLY/1aVBq0UHYxd3r9MgSi33zFQ190gj+BfHY8XeoFiErGyVt1pE68U6InjMq+xkVTSf6yg=="
+			crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 		<title></title>
 	</head>
+
 	<body>
 		<script src="screen_effects.js"></script>
 		<script src="enemy_hp.js"></script>
@@ -27,35 +32,42 @@
 
 		<div class="statuses center half">
 
-			<div class="enemy-hp center" id="enemy-shield" style="display:none;">
+			<div class="enemy-hp center" id="enemy-shield"
+				style="display:none;">
 				<div class="w3-border w3-leftbar spacing">
-					<div class="w3-blue height-10" id="enemy-shield-bar" style="">
-						<center class="shadow text_enemy_bar" id="enemy-shield-number">1000/1000</center>
+					<div class="w3-blue height-10" id="enemy-shield-bar"
+						style="">
+						<center class="shadow text_enemy_bar"
+							id="enemy-shield-number">1000/1000</center>
 					</div>
 				</div>
 			</div>
 			<div class="enemy-hp center" id="enemy-hp" style="display:none;">
 				<div class="w3-border w3-leftbar spacing">
 					<div class="w3-red height-10" id="enemy-hp-bar" style="">
-						<center class="shadow text_enemy_bar" id="enemy-hp-number">1000/1000</center>
+						<center class="shadow text_enemy_bar"
+							id="enemy-hp-number">1000/1000</center>
 					</div>
 				</div>
 			</div>
 
 			<div class="status-bars center">
-				<div class="w3-border w3-rightbar spacing" id="poison-visibility" style="display:none;" >
-					<div class="w3-lime negative-bar" id="poison-bar" ></div>
+				<div class="w3-border w3-rightbar spacing"
+					id="poison-visibility" style="display:none;">
+					<div class="w3-lime negative-bar" id="poison-bar"></div>
 				</div>
 
-					<div class="w3-border w3-rightbar spacing" id="bleeding-visibility" style="display:none;" >
-						<div class="w3-brown negative-bar" id="bleeding-bar" >
-						</div>
+				<div class="w3-border w3-rightbar spacing"
+					id="bleeding-visibility" style="display:none;">
+					<div class="w3-brown negative-bar" id="bleeding-bar">
 					</div>
+				</div>
 
-						<div class="w3-border w3-rightbar spacing" id="freezing-visibility" style="display:none;">
-							<div class="w3-blue-gray negative-bar" id="freezing-bar" >
-							</div>
-						</div>
+				<div class="w3-border w3-rightbar spacing"
+					id="freezing-visibility" style="display:none;">
+					<div class="w3-blue-gray negative-bar" id="freezing-bar">
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -64,13 +76,15 @@
 
 			<div class="w3-border w3-leftbar margin-8" id="player-shield">
 				<div class="w3-blue shield-container" id="player-shield-bar">
-					<center class="shadow" id="player-shield-number">100/100</center>
+					<center class="shadow" id="player-shield-number">100/100
+					</center>
 				</div>
 			</div>
 
 			<div class="w3-border w3-leftbar margin-8" id="player-hp">
 				<div class="w3-red" id="player-hp-bar">
-					<center class="shadow" id="player-hp-number">100/100</center>
+					<center class="shadow" id="player-hp-number">100/100
+					</center>
 				</div>
 			</div>
 		</span>
@@ -100,29 +114,45 @@
 				<div class="w3-border w3-leftbar margin-8">
 					<div class="w3-dark-grey" id="bullet-bar">
 						<center>
-							<span class="shadow" id="bullet-number">10/100</span>
+							<span class="shadow"
+								id="bullet-number">10/100</span>
 						</center>
 					</div>
 				</div>
 			</div>
 		</span>
 
-		<div class="top-left weapon-container-comparisson rarity-common shadow" id="weapon-comparison">
+		<div class="top-left weapon-container-comparisson rarity-common shadow"
+			id="weapon-comparison">
 
 			your weapon:
 			<ul class="w3-ul w3-border">
-				<li> <i class="ra ra-sword ra-lg"></i> Damage: <span id="weapon_a_damage"></span> </li>
-				<li>  <i class="ra  ra-archery-target  ra-lg"></i> Precision: <span id="weapon_a_precision"></span> </li>
-				<li>  <i class="ra ra-ammo-bag  ra-lg"></i> Fire Rate: <span id="weapon_a_fire_rate"></span></ul>
+				<li> <i class="ra ra-sword ra-lg"></i> Damage: <span
+						id="weapon_a_damage"></span> </li>
+				<li> <i class="ra  ra-archery-target  ra-lg"></i> Precision:
+					<span id="weapon_a_precision"></span>
+				</li>
+				<li> <i class="ra ra-rifle  ra-lg"></i> Fire Rate: <span
+						id="weapon_a_fire_rate"></span>
+				<li> <i class="ra ra-ammo-bag  ra-lg"></i> Clip Size: <span
+						id="weapon_a_clip_size"></span>
+			</ul>
 			<hr>
 			weapon in ground:
 			<ul class="w3-ul w3-border">
-				<li> <i class="ra ra-sword ra-lg"></i> Damage: <span id="weapon_b_damage"></span> </li>
-				<li>  <i class="ra  ra-archery-target  ra-lg"></i> Precision: <span id="weapon_b_precision"></span> </li>
-				<li>  <i class="ra ra-ammo-bag  ra-lg"></i> Fire Rate: <span id="weapon_b_fire_rate"></span></ul>
+				<li> <i class="ra ra-sword ra-lg"></i> Damage: <span
+						id="weapon_b_damage"></span> </li>
+				<li> <i class="ra  ra-archery-target  ra-lg"></i> Precision:
+					<span id="weapon_b_precision"></span>
+				</li>
+				<li> <i class="ra ra-rifle  ra-lg"></i> Fire Rate: <span
+						id="weapon_b_fire_rate"></span>
+				<li> <i class="ra ra-ammo-bag  ra-lg"></i> Clip Size: <span
+						id="weapon_b_clip_size"></span>
+			</ul>
 			</ul>
 		</div>
 
 	</body>
-</html>
 
+</html>
