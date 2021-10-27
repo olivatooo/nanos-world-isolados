@@ -129,20 +129,15 @@ function UpdateLocalCharacter(character)
 	HideWeapon()
 end
 
-Grenades = 3
--- TODO: Create a power up module that can be used by pressing F
-Client.Subscribe(
-"KeyPress",
-function(key_name)
-	if key_name == "F" then
-		if Grenades > 0 then
-			Grenades = Grenades - 1
-			SetGrenade(Grenades, 3)
-			Events.CallRemote("PowerUp")
-		end
+
+Input.Register("UseAbility", "F")
+Input.Bind("UseAbility", InputEvent.Pressed, function()
+	if Grenades > 0 then
+		Grenades = Grenades - 1
+		SetGrenade(Grenades, 3)
+		Events.CallRemote("PowerUp")
 	end
-end
-)
+end)
 
 function DamageHandler(actual_hp, max_hp, actual_sp, max_sp)
 	max_hp = max_hp or Isolado.MaxHP

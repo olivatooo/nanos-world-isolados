@@ -69,6 +69,9 @@ function Health.new(character, player, hp, max_hp, recharge_amount, recharge_del
 	self.Character = character
 	self.HP = hp or 1
 	self.MaxHP = max_hp or 1
+
+	self.Character:SetMaxHealth(self.MaxHP)
+	self.Character:SetHealth(self.MaxHP)
 	self.RechargeAmount = 1
 	self.RechargeDelay = 2000
 	self.RechargeSpeed = 1000

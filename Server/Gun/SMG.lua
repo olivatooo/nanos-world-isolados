@@ -18,7 +18,7 @@ function SMG:GetDamage(level)
 		factor_2 = math.random(level-3, level)
 		factor_3 = math.random(level-3, level)
 	end
-	return math.random(math.ceil(0.001 * factor_1^2 + 0.01 * factor_2^2.7 + 0.1 * factor_3 + 12), math.ceil(0.01 * factor_1^2 + 0.1 * factor_2^4 + 0.1 * factor_3 + 22))
+	return math.random(math.ceil(0.001 * factor_1^2 + 0.01 * factor_2^2.7 + 0.1 * factor_3 + 12), math.ceil(0.002 * factor_1^2.3 + 0.02 * factor_2^2.8 + 0.1 * factor_3 + 12))
 end
 
 

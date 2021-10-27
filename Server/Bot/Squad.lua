@@ -18,7 +18,6 @@ end
 function Squad:RemoveBot(bot)
 	Squad[bot] = nil
 	self.Size = self.Size - 1
-
 	if self.Size == 0 then
 		Events.Call("Squad.Dead", self.ID)
 	end

@@ -28,7 +28,7 @@ end
 
 function Isolado:DamageHandler()
 	self.Character:Subscribe("TakeDamage", function(character, damage, bone, damage_type, from_direction, instigator, causer)
-		if self.Shield:TakeDamage(damage) then
+		if self.Shield:TakeDamage(damage, instigator) then
 			if instigator then
 				SendIsoladoStatusToPlayer(instigator, self)
 			end
@@ -68,6 +68,18 @@ function Isolado:Disconnect()
 end
 
 
+function Isolado.LevelUp(player, hp, shield)
+	local isolado = PlayerIsolado[player]
+	isolado.HP:Destroy()
+	isolado.HP = Health(isolado.Character, player, hp, hp)
+	isolado.HP:Recharge()
+	isolado.Shield:Destroy()
+	isolado.Shield = Shield(isolado.Character, player, hp, hp)
+	isolado.Shield:Recharge()
+end
+Events.Subscribe("Isolado.LevelUp", Isolado.LevelUp)
+
+
 function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level, exp, max_exp, sp, max_sp)
 	local self = setmetatable({}, Isolado)
 	-- TODO: Change mesh to an wardrobe system
@@ -83,6 +95,7 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 	self:Death()
 
 	if self.Player then
+		self.Character:SetCameraMode(CameraMode.FPSOnly)
 		self.Character:SetTeam(1)
 		self.Exp = Experience(self.Player, 0, 1)
 		self.Player:Possess(self.Character)

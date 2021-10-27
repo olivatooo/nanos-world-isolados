@@ -12,6 +12,10 @@ function GetExperienceToNextLevel(level)
 	return math.ceil( 0.05 * (level ^ 3) + 0.8 * (level ^ 2) + 2 * level) + 5
 end
 
+function GetPlayerHP(level)
+	return math.ceil(( 0.2 * level^3 + 0.12 * level^2 + 1.1 * level^0.7 + level ) + 115 )
+end
+
 
 function Experience.Adds(player, amount)
 	PlayerExperience[player]:Add(amount)
@@ -19,13 +23,19 @@ end
 Events.Subscribe("Experience.Add", Experience.Adds)
 
 
+function Experience:LevelUP()
+	self.Level = self.Level + 1
+	self.MaxExp = GetExperienceToNextLevel(self.Level)
+	self.Exp = 0
+	local hp = math.ceil(GetPlayerHP(self.Level)/2)
+	Events.Call("Isolado.LevelUp", self.Player, hp, hp)
+	Events.CallRemote("SpawnSound", self.Player, Vector(), "package///isolados/Client/sound_effects/level_up.ogg", true, 2)
+end
+
 function Experience:Add(amount)
 	self.Exp = self.Exp + amount
 	if self.Exp >= self.MaxExp then
-		self.Level = self.Level + 1
-		self.MaxExp = GetExperienceToNextLevel(self.Level)
-		self.Exp = 0
-		Events.CallRemote("SpawnSound", self.Player, Vector(), "package///isolados/Client/sound_effects/level_up.ogg", true, 2)
+		self:LevelUP()
 	end
 	Events.CallRemote("Experience.SetExperience", self.Player, self.Exp, self.MaxExp, self.Level)
 end

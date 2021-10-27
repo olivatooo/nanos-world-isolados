@@ -2,6 +2,7 @@ Package.Require("Isolado.lua")
 Package.Require("Gun/Gun.lua")
 Package.Require("Bot/Bot.lua")
 Package.Require("Bot/Squad.lua")
+Package.Require("Bot/Mission.lua")
 Package.RequirePackage("nanos-world-weapons")
 
 Player.Subscribe("Spawn", function(new_player)
@@ -10,13 +11,7 @@ end)
 
 Package.Subscribe("Load", function()
 	for _,player in pairs(Player.GetAll()) do
-		Squad(Vector(0,0,5000), 5)
-		Gun(Vector(1000, 0, 5000), Rotator(), 1, WeaponType.SMG, 0)
-		Gun(Vector(1000, 0, 5000), Rotator(), 1, WeaponType.SMG, 0)
-		Gun(Vector(1000, 0, 5000), Rotator(), 1, WeaponType.SMG, 0)
-		Gun(Vector(1000, 0, 5000), Rotator(), 1, WeaponType.SMG, 0)
-		Gun(Vector(1000, 0, 5000), Rotator(), 1, WeaponType.SMG, 0)
-		Gun(Vector(1000, 0, 5000), Rotator(), 1, WeaponType.SMG, 0)
+		Mission(Vector(0,0,0))
 		-- TODO: Save player state to load this data on join server
 		Isolado(Vector(0, 0, 0), Rotator(), "nanos-world::SK_Mannequin", player, 100, 200, 1, 1, 1, 2, 30, 200)
 	end

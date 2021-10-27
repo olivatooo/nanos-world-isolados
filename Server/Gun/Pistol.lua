@@ -10,6 +10,7 @@ setmetatable(Pistol, {
 })
 
 
+
 function Pistol:GetDamage(level)
 	local factor_1 = level
 	local factor_2 = level
@@ -19,7 +20,7 @@ function Pistol:GetDamage(level)
 		factor_2 = math.random(level-2, level)
 		factor_3 = math.random(level-2, level)
 	end
-	return 0.001 * factor_1^2 + 0.01 * factor_2^3+ 2 * factor_3 + 10
+	return math.random( math.ceil(0.001 * factor_1^2 + 0.01 * factor_2^3+ 2 * factor_3 + 10), math.ceil(0.002 * factor_1^2.1 + 0.02 * factor_2^3+ 3 * factor_3 + 10))
 end
 
 

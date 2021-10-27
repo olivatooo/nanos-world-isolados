@@ -51,7 +51,19 @@ function TTK(enemy_hp, weapon_damage, weapon_cadence, weapon_number_of_bullets)
 end
 
 
+function Gun:HightlightWhenDroped()
+	self.Weapon.Weapon:Subscribe("Drop", function(self, character, was_triggered_by_player)
+
+	end)
+
+	self.Weapon.Weapon:Subscribe("PickUp", function(self, character)
+		-- called when any weapon is picked up by a Character
+	end)
+end
+
+
 function Gun.new(location, rotation, level, weapon_type, rarity)
 	local self = setmetatable({}, Gun)
-	return weapon_type(location, rotation, level + rarity)
+	self.Weapon = weapon_type(location, rotation, level + rarity)
+	return self
 end
