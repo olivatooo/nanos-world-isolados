@@ -15,19 +15,14 @@ end)
 MissionTimer = nil
 MissionLocations = {}
 function ToogleMissionVisibility()
-	Package.Log("ToogleMissionVisibility")
-	Package.Log(MissionLocations)
-	Package.Log(MissionLocations[1])
 	if MissionLocations ~= {} then
 		if MissionTimer then
-			Package.Log("MissionTimer")
 			Timer.ClearInterval(MissionTimer)
 			Render.ClearItems(0)
 			MissionTimer = nil
 		else
 			MissionTimer = Timer.SetInterval(function()
 				for i,k in pairs(MissionLocations) do
-					Package.Log("Drawing")
 					HitMarker(Render.Project(k) , "■")
 				end
 			end , 30)
@@ -38,9 +33,8 @@ end
 
 
 function SetMissionLocation(list)
-	Package.Log("SetMissionLocation")
-	Package.Log(list)
 	MissionLocations = list
+	ToogleMissionVisibility()
 end
 Events.Subscribe("SetMissionLocation", SetMissionLocation)
 
@@ -51,3 +45,11 @@ Client.Subscribe("KeyPress", function(key_name)
 		ToogleMissionVisibility()
 	end
 end)
+
+
+function PlayOST()
+	Timer.SetInterval(function()
+		Sound(Vector(),"package///isolados/Client/OST/ost_" .. tostring(math.random(1,19)) .. ".ogg", true, true, SoundType.Music,1,1)
+	end, 480000)
+end
+PlayOST()

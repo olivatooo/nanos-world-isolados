@@ -207,9 +207,24 @@ function Bot:AlertTeam(enemy)
 	end
 
 
-	function Bot.new(location, team, level, hp, shield)
+	function GetEnemyHP(level)
+		return math.random(math.ceil(( 0.1 * level^3 + 0.11 * level^2 + 1.05 * level^0.5 + level ) + 80) , math.ceil(( 0.2 * level^3 + 0.12 * level^2 + 1.1 * level^0.7 + level ) + 90 ))
+	end
+
+
+	function Bot.new(location, team, level, hp, shield, id)
 		local self = setmetatable({}, Bot)
-		self.Isolado = Isolado(location, Rotator(0, math.random(180), 0), "nanos-world::SK_Mannequin", nil, math.random(100, 200), 200)
+
+		local hp = hp or GetEnemyHP(level)
+		local sp = 0
+		if level >= 5 then
+			if math.random(100) > (100 - level) then
+				hp = math.ceil(hp/2)
+				sp = math.ceil(hp/2)
+			end
+		end
+
+		self.Isolado = Isolado(location, Rotator(0, math.random(180), 0), "nanos-world::SK_Mannequin", nil, hp, hp, 1, level, 0, 0, sp, sp)
 		self.Team = team or math.random(2,10000000)
 		self.Isolado.Character:SetTeam(self.Team)
 		self.Movement = nil

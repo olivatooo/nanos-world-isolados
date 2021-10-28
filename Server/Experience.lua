@@ -25,6 +25,7 @@ Events.Subscribe("Experience.Add", Experience.Adds)
 
 function Experience:LevelUP()
 	self.Level = self.Level + 1
+	self.Player:SetValue("Level", self.Level, true)
 	self.MaxExp = GetExperienceToNextLevel(self.Level)
 	self.Exp = 0
 	local hp = math.ceil(GetPlayerHP(self.Level)/2)

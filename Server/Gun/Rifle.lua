@@ -30,11 +30,19 @@ function Rifle:GetCadence(level)
 end
 
 
+function Rifle:GetClipCapacity(level)
+	local actual_clip_capacity = self.Weapon:GetClipCapacity()
+	return math.random(actual_clip_capacity - 10, actual_clip_capacity + math.ceil((2.56 * math.random(level+10)) ))
+end
+
+
 
 function Rifle.new(location, rotation, level, weapon_type, rarity)
 	local self = setmetatable({}, Rifle)
 	self.Weapon = RifleList[math.random(#RifleList)](location, rotation)
 	self.Weapon:SetDamage(self:GetDamage(level))
+	local capacity = self:GetClipCapacity(level)
+	self.Weapon:SetAmmoSettings(capacity, capacity * 27)
 	self.Weapon:SetCadence(self:GetCadence(level))
 	return self
 end

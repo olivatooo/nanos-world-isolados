@@ -57,7 +57,9 @@ function Shield:TakeDamage(damage, instigator)
 			if self.Player then
 				Events.CallRemote("SpawnSound", self.Player, Vector(), "package///isolados/Client/sound_effects/shield_broken.ogg", true, 5)
 			end
-			self.Character:ApplyDamage(self.SP * -1, "pelvis", DamageType.Shot, self.Character:GetLocation(), instigator)
+			if instigator then
+				self.Character:ApplyDamage(self.SP * -1, "pelvis", DamageType.Shot, self.Character:GetLocation(), instigator)
+			end
 			self.SP = 0
 		end
 		if self.Player and self.Player:IsValid() then Events.CallRemote("Shield.Update", self.Player, self.SP, self.MaxSP) end
@@ -73,9 +75,9 @@ function Shield.new(char, player, sp, max_sp, recharge_amount, recharge_delay, r
 	self.Character = char
 	self.SP = sp or 100
 	self.MaxSP = max_sp or 100
-	self.RechargeAmount = recharge_amount or 20
+	self.RechargeAmount = recharge_amount or 1
 	self.RechargeDelay = recharge_delay or 5000
-	self.RechargeSpeed = recharge_speed or 200
+	self.RechargeSpeed = recharge_speed or 100
 
 	self.RechargeTimer = nil
 	self.RechargeInterval = nil

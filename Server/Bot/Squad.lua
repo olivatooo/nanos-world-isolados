@@ -9,6 +9,7 @@ setmetatable(Squad, {
 
 
 function Squad:AddBot(bot)
+	table.insert(self.Bots, bot)
 	Squad[bot] = true
 	bot.Squad = self
 	self.Size = self.Size + 1
@@ -25,15 +26,31 @@ end
 
 
 function Squad.BotDeath(bot)
-	local squad = IDSquad[bot.Squad.ID]
+	local squad = IDSquad[bot.Team]
 	squad:RemoveBot(bot)
 end
 Events.Subscribe("Bot.Death", Squad.BotDeath)
 
 
 function Squad:Generate()
-	for i=1, self.Level do
-		self:AddBot(Bot(self.Location, self.ID, self.Level))
+	for i=1, math.random(3,6) do
+		local char = Bot(self.Location, self.ID, self.Level).Isolado.Character
+		local rarity = 0
+		if math.random(100) > 60 then
+			rarity = rarity + 1
+			if math.random(100) > 70 then
+				rarity = rarity + 1
+			end
+			if math.random(100) > 80 then
+				rarity = rarity + 1
+			end
+			if math.random(100) > 90 then
+				rarity = rarity + 1
+			end
+		end
+		local weapon = Gun(Vector(-100000,-1900000,-100000000), Rotator() , self.Level, nil, rarity).Weapon
+		char:PickUp(weapon)
+		self:AddBot(char)
 	end
 end
 

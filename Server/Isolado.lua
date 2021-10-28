@@ -51,6 +51,10 @@ function Isolado:Death()
 			if char and char:IsValid() then
 				Particle(char:GetLocation(),Rotator(0, 0, 0),"nanos-world::P_Explosion",true, true)
 				Events.BroadcastRemote("SpawnSound", char:GetLocation(), "nanos-world::A_Explosion_Large", false)
+				if char:GetPlayer() then
+					Events.Call("Mission.PlayerDied", char:GetPlayer())
+				end
+
 				char:Destroy()
 			end
 		end, 5000)
@@ -95,13 +99,15 @@ function Isolado.new(location, rotation, mesh, player, hp, max_hp, speed, level,
 	self:Death()
 
 	if self.Player then
+		PlayerIsolado[self.Player] = self
+		self.Level = self.Player:GetValue("Level") or self.Level
 		self.Character:SetCameraMode(CameraMode.FPSOnly)
 		self.Character:SetTeam(1)
-		self.Exp = Experience(self.Player, 0, 1)
+		self.Exp = Experience(self.Player, 0, self.Level-1)
+		self.Exp:LevelUP()
 		self.Player:Possess(self.Character)
 		SpawnGenericToolGun()
 		self:Disconnect()
-		PlayerIsolado[self.Player] = self
 	end
 
 	self:DamageHandler()

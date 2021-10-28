@@ -71,6 +71,7 @@ function UpdateLocalCharacter(character)
 	"PickUp",
 	function(charac, object)
 		if (object:GetType() == "Weapon") then
+			HideWeapon()
 			SetBullet(object:GetAmmoClip(), object:GetAmmoToReload(), object:GetAmmoBag())
 			character:Subscribe(
 			"Fire",
@@ -130,6 +131,7 @@ function UpdateLocalCharacter(character)
 end
 
 
+Grenades = 3
 Input.Register("UseAbility", "F")
 Input.Bind("UseAbility", InputEvent.Pressed, function()
 	if Grenades > 0 then
