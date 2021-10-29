@@ -50,6 +50,6 @@ end)
 function PlayOST()
 	Timer.SetInterval(function()
 		Sound(Vector(),"package///isolados/Client/OST/ost_" .. tostring(math.random(1,19)) .. ".ogg", true, true, SoundType.Music,1,1)
-	end, 480000)
+	end, 300000)
 end
 PlayOST()
