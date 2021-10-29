@@ -128,6 +128,9 @@ function BotRunNGun(self)
 			bot:SetGaitMode(GaitMode.Sprinting)
 			bot:MoveTo(enemy_location, 100)
 			if weapon then
+				if weapon:GetAmmoClip() < 1 then
+					weapon:SetAmmoClip(weapon:GetClipCapacity())
+				end
 				weapon:PullUse()
 			else
 				self:IdleMovementBehavior()
@@ -159,6 +162,9 @@ function BotCS16(self)
 			bot:MoveTo(run_location, 70)
 			bot:SetWeaponAimMode(AimMode.ZoomedZoom)
 			if weapon then
+				if weapon:GetAmmoClip() < 1 then
+					weapon:SetAmmoClip(weapon:GetClipCapacity())
+				end
 				weapon:PullUse()
 			else
 				self:IdleMovementBehavior()
@@ -197,6 +203,10 @@ function BotMLG(self)
 			end
 			bot:SetWeaponAimMode(AimMode.ZoomedZoom)
 			if weapon then
+
+				if weapon:GetAmmoClip() < 1 then
+					weapon:SetAmmoClip(weapon:GetClipCapacity())
+				end
 				weapon:PullUse()
 			else
 				self:IdleMovementBehavior()
@@ -243,6 +253,10 @@ function DefaultCombatMovement(self)
 			end
 			bot:SetWeaponAimMode(AimMode.ZoomedZoom)
 			if weapon then
+
+				if weapon:GetAmmoClip() < 1 then
+					weapon:SetAmmoClip(weapon:GetClipCapacity())
+				end
 				weapon:PullUse()
 			else
 				self:IdleMovementBehavior()
