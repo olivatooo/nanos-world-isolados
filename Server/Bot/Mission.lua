@@ -87,27 +87,6 @@ function Mission:End()
 end
 
 
-function Mission:Failed()
-	Timer.SetTimeout(function()
-		for _,player in pairs(Player.GetAll()) do
-			if player:GetControlledCharacter() == nil then
-				Isolado(Vector(0, 0, 0), Rotator(), "nanos-world::SK_PostApocalyptic", player, 1000000, 2000000, 1, player:GetValue("Level"), 1, 2, 30, 200)
-			end
-		end
-
-		for _, bot in pairs(self.Squad.Bots) do
-			if bot and bot:IsValid() then
-				bot:Destroy()
-			end
-		end
-
-		MissionOngoing = false
-		self = nil
-	end, 11000)
-	Server.BroadcastChatMessage("Mission Failed!")
-end
-
-
 SPAWN_LOCATIONS = {
 	Vector(-2006, 8287, 200),
 	Vector(-4701, 7058, 236),
@@ -132,12 +111,33 @@ SPAWN_LOCATIONS = {
 	Vector(-4014, -4765, 714)
 }
 
+function Mission:Failed()
+	Timer.SetTimeout(function()
+		for _,player in pairs(Player.GetAll()) do
+			if player:GetControlledCharacter() == nil then
+				Isolado(SPAWN_LOCATIONS[math.random(#SPAWN_LOCATIONS)], Rotator(), "nanos-world::SK_PostApocalyptic", player, 1000000, 2000000, 1, player:GetValue("Level"), 1, 2, 30, 200)
+			end
+		end
+
+		for _, bot in pairs(self.Squad.Bots) do
+			if bot and bot:IsValid() then
+				bot:Destroy()
+			end
+		end
+
+		MissionOngoing = false
+		self = nil
+	end, 11000)
+	Server.BroadcastChatMessage("Mission Failed!")
+end
+
+
 MissionOngoing = false
 Server.Subscribe("Chat", function(text, sender)
 	if text == "!mission" or text == "!m" then
 		if MissionOngoing == false then
 			MissionOngoing = true
-			Mission(SPAWN_LOCATIONS[math.random(#SPAWN_LOCATIONS)], PlayerExperience[sender].Level)
+			Mission(SPAWN_LOCATIONS[math.random(#SPAWN_LOCATIONS)] + Vector(0,0,2000), PlayerExperience[sender].Level)
 		end
 	end
 end)
